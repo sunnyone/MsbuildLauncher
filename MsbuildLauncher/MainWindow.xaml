@@ -5,7 +5,8 @@
         Loaded="Window_Loaded"
         Closed="Window_Closed"
         AllowDrop="true"
-        Drop="Window_Drop">
+        Drop="Window_Drop"
+        Icon="Images/MSBuildLauncherIcon.ico">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <StackPanel Name="stackPanelTopBar">
