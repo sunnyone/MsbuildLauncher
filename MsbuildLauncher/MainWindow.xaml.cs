@@ -17,6 +17,7 @@ using Microsoft.Build.Utilities;
 using Microsoft.Build.Execution;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
+using System.Threading;
 
 namespace MsbuildLauncher
 {
@@ -155,13 +156,12 @@ namespace MsbuildLauncher
         }
 
         // dirty way...
-        private Brush convertColor(ConsoleColor consoleColor)
+        private Brush convertColor(string color)
         {
-            string name = consoleColor.ToString();
-            return (Brush)typeof(Brushes).GetProperty(name).GetValue(null, null);
+            return (Brush)typeof(Brushes).GetProperty(color).GetValue(null, null);
         }
 
-        private void appendText(string text, ConsoleColor color)
+        public void AppendLogText(string text, string color)
         {
             Span span = new Span();
             span.Foreground = convertColor(color);
@@ -173,41 +173,34 @@ namespace MsbuildLauncher
             this.richTextBoxLog.ScrollToEnd();
         }
 
+        private System.Diagnostics.Process agentProcess = null;
         private void startBuild(string xmlPath, string targetName)
         {
-            System.Threading.Tasks.Task.Factory.StartNew((state) =>
-            {
-                ConsoleColor lastColor = defaultConsoleColor;
-
-                try
-                {
-                    var proj = new Microsoft.Build.Evaluation.Project(xmlPath);
-                    var consoleLogger = new Microsoft.Build.Logging.ConsoleLogger(LoggerVerbosity.Normal,
-                        (text) =>
-                        {
-                            Dispatcher.Invoke(new Action<ConsoleColor>((c) =>
-                            {
-                                appendText(text, c);
-                            }), lastColor);
-                        },
-                        (c) => { lastColor = c; }, // set color
-                        () => { lastColor = defaultConsoleColor; }); // reset color
-
-                    ILogger[] loggers = new ILogger[] { consoleLogger };
-                    proj.Build((string)state, loggers);
-                    proj.ProjectCollection.UnloadAllProjects();
-                }
-                catch (Exception ex)
-                {
-                    Dispatcher.Invoke(new Action<Exception>((ex1) =>
-                    {
-                        MessageBox.Show("Failed to build: \n" + ex.Message);
+            System.Threading.Tasks.Task.Factory.StartNew(() => {
+                try {
+                    System.Diagnostics.ProcessStartInfo si = new System.Diagnostics.ProcessStartInfo();
+                    si.FileName = "MsbuildLauncherAgent.exe";
+                    si.Arguments = String.Format("\"{0}\" \"{1}\" \"{2}\"",
+                        ((App)Application.Current).PipeName,
+                        xmlPath, targetName);
+                    si.CreateNoWindow = true;
+                    si.UseShellExecute = false;
+                    agentProcess = System.Diagnostics.Process.Start(si);
+                    agentProcess.WaitForExit();
+                    agentProcess = null;
+                } catch (Exception ex) {
+                    Dispatcher.Invoke(new Action<Exception>((ex1) => {
+                        MessageBox.Show("Failed to build: \n" + ex1.Message);
                     }), ex);
                 }
-            }, targetName).ContinueWith((obj) =>
-            {
-                enableUI();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+
+                Dispatcher.Invoke(new Action(() => {
+                    enableUI();
+                    buttonCancel.IsEnabled = false;
+                }));
+            });
+
+            buttonCancel.IsEnabled = true;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -277,5 +270,12 @@ namespace MsbuildLauncher
             this.selectedXmlPath = (string)this.comboBoxFilePath.SelectedItem;
             loadBuildXmlFromSelectedXmlPath();
         }
+
+        private void buttonCancel_Click(object sender, RoutedEventArgs e) {
+            if (agentProcess != null) {
+                agentProcess.Kill();
+            }
+        }
+
     }
 }

@@ -42,6 +42,10 @@
                     <TextBlock Foreground="{StaticResource TextBrush}" HorizontalAlignment="Center">&lt;&lt;Targets&gt;&gt;</TextBlock>
                 </StackPanel>
             </ScrollViewer>
+
+            <StackPanel DockPanel.Dock="Top" Background="{StaticResource WindowBackgroundBrush}">
+                <Button Name="buttonCancel" IsEnabled="False" Click="buttonCancel_Click">Cancel</Button>
+            </StackPanel>
             
             <RichTextBox Name="richTextBoxLog" VerticalScrollBarVisibility="Visible" IsReadOnly="True">
             </RichTextBox>

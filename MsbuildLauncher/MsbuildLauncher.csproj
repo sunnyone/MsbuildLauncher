@@ -48,6 +48,8 @@
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -75,6 +77,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Const.cs" />
+    <Compile Include="IMsbuildLogWriter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -85,6 +88,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MsbuildLogWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -111,6 +115,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\MSBuildLauncherIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MsbuildLauncherAgent\MsbuildLauncherAgent.csproj">
+      <Project>{742574F0-063F-43CE-BEDF-E5B906F14088}</Project>
+      <Name>MsbuildLauncherAgent</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
