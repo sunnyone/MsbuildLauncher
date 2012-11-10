@@ -1,6 +1,10 @@
 NEWS
 =====
 
+2012-11-10  Version 0.0.2
+---------------------------
+* Added "Cancel" feature.
+
 2012-10-27  Version 0.0.1
 ---------------------------
 * Initial release.
