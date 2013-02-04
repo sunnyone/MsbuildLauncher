@@ -23,7 +23,16 @@ namespace MsbuildLauncherAgent {
                 () => { lastColor = defaultConsoleColor; }); // reset color
 
             ILogger[] loggers = new ILogger[] { consoleLogger };
-            proj.Build(targetName, loggers);
+            
+            if (string.IsNullOrEmpty(targetName))
+            {
+                proj.Build(loggers);
+            }
+            else
+            {
+                proj.Build(targetName, loggers);
+            }
+
             proj.ProjectCollection.UnloadAllProjects();
         }
 
