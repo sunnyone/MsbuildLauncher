@@ -43,38 +43,42 @@
             </StackPanel>
         </DockPanel>
         
-        <DockPanel>
-            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Left" >
-                <StackPanel Orientation="Vertical" Width="220" Background="{StaticResource WindowBackgroundBrush}">
-                    <TextBlock Foreground="{StaticResource TextBrush}" HorizontalAlignment="Center">&lt;&lt;Targets&gt;&gt;</TextBlock>
-                    
-                    <ItemsControl ItemsSource="{Binding TargetNameList}">
-                        <ItemsControl.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                <Setter Property="MinHeight" Value="20" />
-                                <Setter Property="Margin" Value="4" />
-                            </Style>
-                        </ItemsControl.Resources>
-                        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Left"
+                          Background="{StaticResource ControlBackgroundBrush}">
+                <Expander Header="Targets" Background="{StaticResource WindowBackgroundBrush}" IsExpanded="True" IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">
+                    <ItemsControl ItemsSource="{Binding TargetNameList}" >
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
-                        
+
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Button Content="{Binding}"
                                         Click="buttonTarget_Click"
-                                        IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}" />
+                                        MinHeight="20"
+                                        Margin="4"
+                                        Padding="10,0,0,0"
+                                        HorizontalContentAlignment="Left" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                </StackPanel>
+                </Expander>
             </ScrollViewer>
 
-            <RichTextBox Name="richTextBoxLog" VerticalScrollBarVisibility="Visible" IsReadOnly="True">
+            <GridSplitter Grid.Column="0" Width="2" HorizontalAlignment="Right" Background="{StaticResource NormalBorderBrush}"/>
+
+            <RichTextBox Name="richTextBoxLog" VerticalScrollBarVisibility="Visible" IsReadOnly="True" Grid.Column="1">
             </RichTextBox>
-        </DockPanel>
+
+        </Grid>
+        
     </DockPanel>
 </Window>
