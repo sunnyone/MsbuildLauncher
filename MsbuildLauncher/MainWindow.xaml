@@ -15,7 +15,7 @@
     
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
-            <StackPanel Name="stackPanelTopBar">
+            <StackPanel>
                 <StackPanel Orientation="Horizontal" Background="{StaticResource WindowBackgroundBrush}">
                     <StackPanel.Resources>
                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -26,6 +26,14 @@
 
                     <Button Name="buttonOpen" Click="buttonOpen_Click" IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">Open</Button>
                     <Button Name="buttonReload" Click="buttonReload_Click" IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">Reload</Button>
+                    
+                    <Separator />
+
+                    <Button Name="buttonBuild"
+                            ToolTip="Build default target(s)"
+                            Click="buttonBuild_Click"
+                            IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">Build</Button>
+                    <Button Name="buttonCancel" Click="buttonCancel_Click" IsEnabled="{Binding IsBuildInProgress}">Cancel</Button>
                 </StackPanel>
 
                 <DockPanel Background="{StaticResource WindowBackgroundBrush}">
@@ -50,10 +58,6 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <StackPanel DockPanel.Dock="Top" Background="{StaticResource WindowBackgroundBrush}">
-                <Button Name="buttonCancel" Click="buttonCancel_Click" IsEnabled="{Binding IsBuildInProgress}">Cancel</Button>
-            </StackPanel>
-            
             <RichTextBox Name="richTextBoxLog" VerticalScrollBarVisibility="Visible" IsReadOnly="True">
             </RichTextBox>
         </DockPanel>

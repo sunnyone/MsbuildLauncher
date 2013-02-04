@@ -249,6 +249,12 @@ namespace MsbuildLauncher
             loadBuildXmlFromSelectedXmlPath();
         }
 
+        private void buttonBuild_Click(object sender, RoutedEventArgs e)
+        {
+            initializeLogText();
+            startBuild(selectedXmlPath, null);
+        }
+
         private void buttonTarget_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
@@ -268,6 +274,5 @@ namespace MsbuildLauncher
                 agentProcess.Kill();
             }
         }
-
     }
 }
