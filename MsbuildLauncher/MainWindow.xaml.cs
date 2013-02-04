@@ -190,9 +190,7 @@ namespace MsbuildLauncher
                     }), ex);
                 }
 
-                Dispatcher.Invoke(new Action(() => {
-                    this.mainViewModel.IsBuildInProgress = false;
-                }));
+                this.mainViewModel.IsBuildInProgress = false;
             });
         }
 
