@@ -77,7 +77,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Const.cs" />
-    <Compile Include="IMsbuildLogWriter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -117,6 +116,10 @@
     <Resource Include="Images\MSBuildLauncherIcon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MsbuildLauncher.Common\MsbuildLauncher.Common.csproj">
+      <Project>{4C0C1CDD-A54F-413F-90C4-26DA9962DEAD}</Project>
+      <Name>MsbuildLauncher.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MsbuildLauncherAgent\MsbuildLauncherAgent.csproj">
       <Project>{742574F0-063F-43CE-BEDF-E5B906F14088}</Project>
       <Name>MsbuildLauncherAgent</Name>

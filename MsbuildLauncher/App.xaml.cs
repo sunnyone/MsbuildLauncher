@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using MsbuildLauncher.Common;
 
 namespace MsbuildLauncher {
     public partial class App : Application {

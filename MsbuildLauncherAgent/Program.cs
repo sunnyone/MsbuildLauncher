@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ServiceModel;
 using Microsoft.Build.Framework;
+using MsbuildLauncher.Common;
 
 namespace MsbuildLauncherAgent {
     class Program {

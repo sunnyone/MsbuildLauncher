@@ -5,8 +5,8 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
-namespace MsbuildLauncherAgent {
-    [ServiceContract]
+namespace MsbuildLauncher.Common {
+    [ServiceContract(ConfigurationName = "MsbuildLauncher.IMsbuildLogWriter")]
     public interface IMsbuildLogWriter {
         [OperationContract]
         void WriteLog(string text, string color);
