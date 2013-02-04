@@ -1,12 +1,18 @@
 ﻿<Window x:Class="MsbuildLauncher.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MsbuildLauncher"
         Title="MSBuild Launcher" Height="600" Width="800"
         Loaded="Window_Loaded"
         Closed="Window_Closed"
         AllowDrop="true"
         Drop="Window_Drop"
         Icon="Images/MSBuildLauncherIcon.ico">
+    
+    <Window.Resources>
+        <local:BooleanNotConverter x:Key="BooleanNotConverter" />
+    </Window.Resources>
+    
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <StackPanel Name="stackPanelTopBar">
@@ -18,8 +24,8 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <Button Name="buttonOpen" Click="buttonOpen_Click">Open</Button>
-                    <Button Name="buttonReload" Click="buttonReload_Click">Reload</Button>
+                    <Button Name="buttonOpen" Click="buttonOpen_Click" IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">Open</Button>
+                    <Button Name="buttonReload" Click="buttonReload_Click" IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">Reload</Button>
                 </StackPanel>
 
                 <DockPanel Background="{StaticResource WindowBackgroundBrush}">
@@ -31,7 +37,8 @@
         
         <DockPanel>
             <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Left" >
-                <StackPanel Name="stackPanelButtons" Orientation="Vertical" Width="220" Background="{StaticResource WindowBackgroundBrush}">
+                <StackPanel Name="stackPanelButtons" Orientation="Vertical" Width="220" Background="{StaticResource WindowBackgroundBrush}"
+                            IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">
                     <StackPanel.Resources>
                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Setter Property="MinHeight" Value="20" />
@@ -44,7 +51,7 @@
             </ScrollViewer>
 
             <StackPanel DockPanel.Dock="Top" Background="{StaticResource WindowBackgroundBrush}">
-                <Button Name="buttonCancel" IsEnabled="False" Click="buttonCancel_Click">Cancel</Button>
+                <Button Name="buttonCancel" Click="buttonCancel_Click" IsEnabled="{Binding IsBuildInProgress}">Cancel</Button>
             </StackPanel>
             
             <RichTextBox Name="richTextBoxLog" VerticalScrollBarVisibility="Visible" IsReadOnly="True">

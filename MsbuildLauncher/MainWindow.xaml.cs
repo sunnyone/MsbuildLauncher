@@ -18,6 +18,7 @@ using Microsoft.Build.Execution;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Threading;
+using MsbuildLauncher.ViewModel;
 
 namespace MsbuildLauncher
 {
@@ -26,7 +27,12 @@ namespace MsbuildLauncher
         public MainWindow()
         {
             InitializeComponent();
+
+            mainViewModel = new MainViewModel();
+            this.DataContext = mainViewModel;
         }
+
+        private MainViewModel mainViewModel;
 
         const ConsoleColor defaultConsoleColor = ConsoleColor.White;
 
@@ -63,18 +69,6 @@ namespace MsbuildLauncher
         {
             this.richTextBoxLog.Document.Blocks.Clear();
             this.richTextBoxLog.Document.Blocks.Add(new Paragraph());
-        }
-
-        private void disableUI()
-        {
-            this.stackPanelButtons.IsEnabled = false;
-            this.stackPanelTopBar.IsEnabled = false;
-        }
-
-        private void enableUI()
-        {
-            this.stackPanelButtons.IsEnabled = true;
-            this.stackPanelTopBar.IsEnabled = true;
         }
 
         string selectedXmlPath = null;
@@ -176,6 +170,8 @@ namespace MsbuildLauncher
         private System.Diagnostics.Process agentProcess = null;
         private void startBuild(string xmlPath, string targetName)
         {
+            this.mainViewModel.IsBuildInProgress = true;
+
             System.Threading.Tasks.Task.Factory.StartNew(() => {
                 try {
                     System.Diagnostics.ProcessStartInfo si = new System.Diagnostics.ProcessStartInfo();
@@ -195,12 +191,9 @@ namespace MsbuildLauncher
                 }
 
                 Dispatcher.Invoke(new Action(() => {
-                    enableUI();
-                    buttonCancel.IsEnabled = false;
+                    this.mainViewModel.IsBuildInProgress = false;
                 }));
             });
-
-            buttonCancel.IsEnabled = true;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -261,7 +254,6 @@ namespace MsbuildLauncher
             Button button = (Button)sender;
 
             initializeLogText();
-            disableUI();
             startBuild(selectedXmlPath, (string)button.DataContext);
         }
 
