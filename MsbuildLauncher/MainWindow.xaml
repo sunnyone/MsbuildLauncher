@@ -45,16 +45,31 @@
         
         <DockPanel>
             <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Left" >
-                <StackPanel Name="stackPanelButtons" Orientation="Vertical" Width="220" Background="{StaticResource WindowBackgroundBrush}"
-                            IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">
-                    <StackPanel.Resources>
-                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                            <Setter Property="MinHeight" Value="20" />
-                            <Setter Property="Margin" Value="4" />
-                        </Style>
-                    </StackPanel.Resources>
-                
+                <StackPanel Orientation="Vertical" Width="220" Background="{StaticResource WindowBackgroundBrush}">
                     <TextBlock Foreground="{StaticResource TextBrush}" HorizontalAlignment="Center">&lt;&lt;Targets&gt;&gt;</TextBlock>
+                    
+                    <ItemsControl ItemsSource="{Binding TargetNameList}">
+                        <ItemsControl.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                <Setter Property="MinHeight" Value="20" />
+                                <Setter Property="Margin" Value="4" />
+                            </Style>
+                        </ItemsControl.Resources>
+                        
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding}"
+                                        Click="buttonTarget_Click"
+                                        IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
             </ScrollViewer>
 

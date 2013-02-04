@@ -30,6 +30,7 @@ namespace MsbuildLauncher
 
             mainViewModel = new MainViewModel();
             this.DataContext = mainViewModel;
+
         }
 
         private MainViewModel mainViewModel;
@@ -81,7 +82,7 @@ namespace MsbuildLauncher
             }
 
             initializeLogText();
-            this.stackPanelButtons.Children.Clear();
+            this.mainViewModel.TargetNameList.Clear();
 
             List<string> targetNameList = new List<string>();
             try
@@ -102,13 +103,7 @@ namespace MsbuildLauncher
 
             foreach (var name in targetNameList)
             {
-                Button button = new Button();
-
-                button.Content = name;
-                button.DataContext = name;
-                button.Click += buttonTarget_Click;
-
-                this.stackPanelButtons.Children.Add(button);
+                this.mainViewModel.TargetNameList.Add(name);
             }
         }
 

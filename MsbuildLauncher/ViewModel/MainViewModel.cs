@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections.ObjectModel;
 
 namespace MsbuildLauncher.ViewModel
 {
@@ -37,5 +38,10 @@ namespace MsbuildLauncher.ViewModel
             set { isBuildInProgress = value; OnPropertyChanged("IsBuildInProgress"); }
         }
 
+        private ObservableCollection<string> targetNameList = new ObservableCollection<string>();
+        public ObservableCollection<string> TargetNameList
+        {
+            get { return targetNameList; }
+        }
     }
 }
