@@ -32,6 +32,12 @@ using System.Windows.Threading;
 
 namespace MsbuildLauncher.ViewModel
 {
+    public class LogOutputEventArgs : EventArgs
+    {
+        public string Color { get; set; }
+        public string Text { get; set; }
+    }
+
     public class MainViewModel : ViewModelBase
     {
         private bool isBuildInProgress;
@@ -63,6 +69,7 @@ namespace MsbuildLauncher.ViewModel
 
         // FIXME: use action
         public event EventHandler SupposeLogInitialized;
+        public event EventHandler<LogOutputEventArgs> SupposeLogOutput;
 
         private void updateHistory(string xmlPath)
         {
@@ -156,6 +163,14 @@ namespace MsbuildLauncher.ViewModel
             if (ctx != null)
             {
                 ctx.Kill();
+            }
+        }
+
+        public void OutputLog(string text, string color)
+        {
+            if (SupposeLogOutput != null)
+            {
+                SupposeLogOutput(this, new LogOutputEventArgs() {Color = color, Text = text});
             }
         }
     }

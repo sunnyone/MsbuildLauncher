@@ -10,7 +10,7 @@ namespace MsbuildLauncher {
     public class MsbuildLauncherApi : IMsbuildLauncherApi
     {
         public void WriteLog(string text, string color) {
-            ((MainWindow)App.Current.MainWindow).AppendLogText(text, color);
+            ((App)App.Current).MainViewModel.OutputLog(text, color);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using MsbuildLauncher.Common;
+using MsbuildLauncher.ViewModel;
 
 namespace MsbuildLauncher {
     public partial class App : Application {
@@ -12,6 +13,8 @@ namespace MsbuildLauncher {
 
         private System.ServiceModel.ServiceHost serviceHost = null;
         public string PipeName { get; set; }
+
+        public MainViewModel MainViewModel { get; set; }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -27,6 +30,10 @@ namespace MsbuildLauncher {
                                            "net.pipe://localhost/" + pipeName);
             PipeName = pipeName;
             serviceHost.Open();
+
+            this.MainViewModel = new MainViewModel();
+            this.MainWindow = new MainWindow(this.MainViewModel);
+            this.MainWindow.Show();
         }
 
         private void Application_Exit(object sender, ExitEventArgs e) {

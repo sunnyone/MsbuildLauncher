@@ -24,18 +24,18 @@ namespace MsbuildLauncher
 {
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private MainViewModel mainViewModel;
+        public MainWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
 
-            mainViewModel = new MainViewModel();
             this.DataContext = mainViewModel;
+            this.mainViewModel = mainViewModel;
 
             mainViewModel.SupposeLogInitialized += new EventHandler(mainViewModel_SupposeLogInitialized);
+            mainViewModel.SupposeLogOutput += new EventHandler<LogOutputEventArgs>(mainViewModel_SupposeLogOutput);
         }
 
-
-        private MainViewModel mainViewModel;
 
         const ConsoleColor defaultConsoleColor = ConsoleColor.White;
 
@@ -74,27 +74,22 @@ namespace MsbuildLauncher
             return (Brush)typeof(Brushes).GetProperty(color).GetValue(null, null);
         }
 
-        private void initializeLogText()
+        void mainViewModel_SupposeLogInitialized(object sender, EventArgs e)
         {
             this.richTextBoxLog.Document.Blocks.Clear();
             this.richTextBoxLog.Document.Blocks.Add(new Paragraph());
         }
 
-        public void AppendLogText(string text, string color)
+        void mainViewModel_SupposeLogOutput(object sender, LogOutputEventArgs e)
         {
             Span span = new Span();
-            span.Foreground = convertColor(color);
-            span.Inlines.Add(text);
+            span.Foreground = convertColor(e.Color);
+            span.Inlines.Add(e.Text);
 
             Paragraph p = (Paragraph)this.richTextBoxLog.Document.Blocks.Last();
             p.Inlines.Add(span);
 
             this.richTextBoxLog.ScrollToEnd();
-        }
-
-        void mainViewModel_SupposeLogInitialized(object sender, EventArgs e)
-        {
-            initializeLogText();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
