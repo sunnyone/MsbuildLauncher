@@ -67,7 +67,7 @@ namespace MsbuildLauncher.ViewModel
             set { selectedXmlPath = value; OnPropertyChanged("SelectedXmlPath"); }
         }
 
-        // FIXME: use action
+        // TODO: use action
         public event EventHandler SupposeLogInitialized;
         public event EventHandler<LogOutputEventArgs> SupposeLogOutput;
 
@@ -124,7 +124,8 @@ namespace MsbuildLauncher.ViewModel
             this.SelectedXmlPath = xmlPath;
         }
 
-        private BuildContext buildContext = null;
+        public BuildContext BuildContext { get; set; }
+        
         public void StartBuild(string targetName)
         {
             this.IsBuildInProgress = true;
@@ -134,15 +135,16 @@ namespace MsbuildLauncher.ViewModel
                 this.SupposeLogInitialized(this, new EventArgs());
             }
 
-            buildContext = new BuildContext();
-            buildContext.TargetName = targetName;
-            buildContext.XmlPath = this.SelectedXmlPath;
-            buildContext.PipeName = ((App) Application.Current).PipeName;
+            BuildContext = new BuildContext();
+            BuildContext.TargetName = targetName;
+            BuildContext.XmlPath = this.SelectedXmlPath;
+            BuildContext.PipeName = ((App) Application.Current).PipeName;
 
-            var task = buildContext.BuildAsync();
+            var task = BuildContext.BuildAsync();
 
             task.ContinueWith((t) =>
             {
+                // TODO: use action
                 Application.Current.Dispatcher.Invoke(new Action<Exception>((ex1) =>
                 {
                     MessageBox.Show("Failed to build: \n" + ex1.Message);
@@ -151,7 +153,7 @@ namespace MsbuildLauncher.ViewModel
             
             task.ContinueWith((t) =>
                 {
-                    buildContext = null;
+                    BuildContext = null;
                     this.IsBuildInProgress = false;
                 });
 
@@ -159,7 +161,7 @@ namespace MsbuildLauncher.ViewModel
 
         public void KillBuild()
         {
-            var ctx = buildContext;
+            var ctx = BuildContext;
             if (ctx != null)
             {
                 ctx.Kill();

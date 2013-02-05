@@ -10,7 +10,28 @@ namespace MsbuildLauncher {
     public class MsbuildLauncherApi : IMsbuildLauncherApi
     {
         public void WriteLog(string text, string color) {
-            ((App)App.Current).MainViewModel.OutputLog(text, color);
+            var mainViewModel = ((App)App.Current).MainViewModel;
+            mainViewModel.OutputLog(text, color);
+        }
+
+        public string GetXmlPath()
+        {
+            var mainViewModel = ((App)App.Current).MainViewModel;
+            
+            if (mainViewModel.BuildContext == null)
+                return null;
+
+            return mainViewModel.BuildContext.XmlPath;
+        }
+
+        public string GetTargetName()
+        {
+            var mainViewModel = ((App)App.Current).MainViewModel;
+
+            if (mainViewModel.BuildContext == null)
+                return null;
+
+            return mainViewModel.BuildContext.TargetName;
         }
     }
 }

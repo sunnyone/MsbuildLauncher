@@ -20,8 +20,7 @@ namespace MsbuildLauncher
             {
                 System.Diagnostics.ProcessStartInfo si = new System.Diagnostics.ProcessStartInfo();
                 si.FileName = "MsbuildLauncher.Agent.exe";
-                si.Arguments = String.Format("\"{0}\" \"{1}\" \"{2}\"",
-                    PipeName, XmlPath, TargetName);
+                si.Arguments = String.Format("\"{0}\"", PipeName);
                 si.CreateNoWindow = true;
                 si.UseShellExecute = false;
                 agentProcess = System.Diagnostics.Process.Start(si);

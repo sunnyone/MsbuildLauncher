@@ -7,7 +7,14 @@ using System.Text;
 
 namespace MsbuildLauncher.Common {
     [ServiceContract(ConfigurationName = "MsbuildLauncher.IMsbuildLauncherApi")]
-    public interface IMsbuildLauncherApi {
+    public interface IMsbuildLauncherApi
+    {
+        [OperationContract]
+        string GetXmlPath();
+
+        [OperationContract]
+        string GetTargetName();
+
         [OperationContract]
         void WriteLog(string text, string color);
     }

@@ -8,8 +8,11 @@ namespace MsbuildLauncher.Agent {
         // FIXME: duplicated
         const ConsoleColor defaultConsoleColor = ConsoleColor.White;
 
-        static void Build(string xmlPath, string targetName, IMsbuildLauncherApi launcherApi) {
+        static void Build(IMsbuildLauncherApi launcherApi) {
             ConsoleColor lastColor = ConsoleColor.White;
+
+            string xmlPath = launcherApi.GetXmlPath();
+            string targetName = launcherApi.GetTargetName();
 
             var proj = new Microsoft.Build.Evaluation.Project(xmlPath);
             var consoleLogger = new Microsoft.Build.Logging.ConsoleLogger(LoggerVerbosity.Normal,
@@ -35,13 +38,11 @@ namespace MsbuildLauncher.Agent {
 
 
         static void Main(string[] args) {
-            if (args.Length != 3) {
+            if (args.Length != 1) {
                 throw new ArgumentException("Argument is not valid.");
             }
 
             string pipeName = args[0];
-            string xmlPath = args[1];
-            string targetName = args[2];
 
             ChannelFactory<IMsbuildLauncherApi> channelFactory = null;
             try {
@@ -50,7 +51,7 @@ namespace MsbuildLauncher.Agent {
                                                         new EndpointAddress("net.pipe://localhost/" + pipeName));
                 channelFactory.Open();
                 IMsbuildLauncherApi launcherApi = channelFactory.CreateChannel();
-                Build(xmlPath, targetName, launcherApi);
+                Build(launcherApi);
             } finally {
                 if (channelFactory != null) {
                     channelFactory.Close();
