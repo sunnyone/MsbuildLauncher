@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -116,7 +117,7 @@ namespace MsbuildLauncher.ViewModel
             this.SelectedXmlPath = xmlPath;
         }
 
-        private System.Diagnostics.Process agentProcess = null;
+        private BuildContext buildContext = null;
         public void StartBuild(string targetName)
         {
             this.IsBuildInProgress = true;
@@ -126,38 +127,35 @@ namespace MsbuildLauncher.ViewModel
                 this.SupposeLogInitialized(this, new EventArgs());
             }
 
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    System.Diagnostics.ProcessStartInfo si = new System.Diagnostics.ProcessStartInfo();
-                    si.FileName = "MsbuildLauncher.Agent.exe";
-                    si.Arguments = String.Format("\"{0}\" \"{1}\" \"{2}\"",
-                        ((App)Application.Current).PipeName,
-                        this.SelectedXmlPath, targetName);
-                    si.CreateNoWindow = true;
-                    si.UseShellExecute = false;
-                    agentProcess = System.Diagnostics.Process.Start(si);
-                    agentProcess.WaitForExit();
-                    agentProcess = null;
-                }
-                catch (Exception ex)
-                {
-                    Application.Current.Dispatcher.Invoke(new Action<Exception>((ex1) =>
-                    {
-                        MessageBox.Show("Failed to build: \n" + ex1.Message);
-                    }), ex);
-                }
+            buildContext = new BuildContext();
+            buildContext.TargetName = targetName;
+            buildContext.XmlPath = this.SelectedXmlPath;
+            buildContext.PipeName = ((App) Application.Current).PipeName;
 
-                this.IsBuildInProgress = false;
-            });
+            var task = buildContext.BuildAsync();
+
+            task.ContinueWith((t) =>
+            {
+                Application.Current.Dispatcher.Invoke(new Action<Exception>((ex1) =>
+                {
+                    MessageBox.Show("Failed to build: \n" + ex1.Message);
+                }), t.Exception.InnerException);
+            }, TaskContinuationOptions.OnlyOnFaulted);
+            
+            task.ContinueWith((t) =>
+                {
+                    buildContext = null;
+                    this.IsBuildInProgress = false;
+                });
+
         }
 
         public void KillBuild()
         {
-            if (agentProcess != null)
+            var ctx = buildContext;
+            if (ctx != null)
             {
-                agentProcess.Kill();
+                ctx.Kill();
             }
         }
     }
