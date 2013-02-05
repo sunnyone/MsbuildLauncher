@@ -26,6 +26,7 @@
 
                     <Button Name="buttonOpen" Click="buttonOpen_Click" IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">Open</Button>
                     <Button Name="buttonReload" Click="buttonReload_Click" IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">Reload</Button>
+                    <Button Name="buttonEdit" Click="buttonEdit_OnClick" Content="Edit" ToolTip="Open the MSBuild file with a program (associated with .xml)"/>
                     
                     <Separator />
 

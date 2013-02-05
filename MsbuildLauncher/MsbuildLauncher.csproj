@@ -70,6 +70,7 @@
     </ApplicationDefinition>
     <Compile Include="BooleanNotConverter.cs" />
     <Compile Include="BuildContext.cs" />
+    <Compile Include="FileAssocUtil.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">

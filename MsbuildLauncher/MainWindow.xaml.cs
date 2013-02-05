@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -174,6 +175,27 @@ namespace MsbuildLauncher
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e) {
             this.mainViewModel.KillBuild();
+        }
+
+        private void buttonEdit_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (this.mainViewModel.SelectedXmlPath == null)
+            {
+                MessageBox.Show("MSBuild file is not selected.", Const.ApplicationName);
+                return;
+            }
+
+            string exePath = FileAssocUtil.GetAssocExecutable(".xml");
+            if (exePath == null)
+            {
+                MessageBox.Show("Failed to get the program for .xml");
+                return;
+            }
+
+            System.Diagnostics.ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = exePath;
+            psi.Arguments = string.Format("\"{0}\"", this.mainViewModel.SelectedXmlPath);
+            System.Diagnostics.Process.Start(psi);
         }
     }
 }
