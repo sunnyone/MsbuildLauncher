@@ -38,7 +38,7 @@
 
                 <DockPanel Background="{StaticResource WindowBackgroundBrush}">
                     <TextBlock DockPanel.Dock="Left" Margin="4,0,4,0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}">File:</TextBlock>
-                    <ComboBox Name="comboBoxFilePath" SelectionChanged="comboBoxFilePath_SelectionChanged"></ComboBox>
+                    <ComboBox Name="comboBoxFilePath" SelectionChanged="comboBoxFilePath_SelectionChanged" ItemsSource="{Binding HistoryPathList}"></ComboBox>
                 </DockPanel>
             </StackPanel>
         </DockPanel>

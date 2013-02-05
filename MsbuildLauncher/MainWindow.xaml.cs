@@ -31,7 +31,9 @@ namespace MsbuildLauncher
             mainViewModel = new MainViewModel();
             this.DataContext = mainViewModel;
 
+            mainViewModel.SupposeLogInitialized += new EventHandler(mainViewModel_SupposeLogInitialized);
         }
+
 
         private MainViewModel mainViewModel;
 
@@ -46,7 +48,7 @@ namespace MsbuildLauncher
             {
                 foreach (string path in Properties.Settings.Default.FilePathHistory)
                 {
-                    this.comboBoxFilePath.Items.Add(path);
+                    this.mainViewModel.HistoryPathList.Add(path);
                 }
             }
         }
@@ -66,88 +68,16 @@ namespace MsbuildLauncher
             Properties.Settings.Default.Save();
         }
 
-        private void initializeLogText()
-        {
-            this.richTextBoxLog.Document.Blocks.Clear();
-            this.richTextBoxLog.Document.Blocks.Add(new Paragraph());
-        }
-
-        string selectedXmlPath = null;
-        private void loadBuildXmlFromSelectedXmlPath()
-        {
-            if (selectedXmlPath == null)
-            {
-                MessageBox.Show("MSBuild file is not selected.", Const.ApplicationName);
-                return;
-            }
-
-            initializeLogText();
-            this.mainViewModel.TargetNameList.Clear();
-
-            List<string> targetNameList = new List<string>();
-            try
-            {
-                var project = new Microsoft.Build.Evaluation.Project(selectedXmlPath);
-                foreach (var kvp in project.Targets)
-                {
-                    targetNameList.Add(kvp.Key);
-                }
-                project.ProjectCollection.UnloadAllProjects();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed to load msbuild file: \n" + ex.Message, Const.ApplicationName);
-
-                return;
-            }
-
-            foreach (var name in targetNameList)
-            {
-                this.mainViewModel.TargetNameList.Add(name);
-            }
-        }
-
-        private void loadXml(string xmlPath)
-        {
-            this.comboBoxFilePath.SelectionChanged -= comboBoxFilePath_SelectionChanged;
-
-            // refresh all...
-            LinkedList<string> pathList = new LinkedList<string>();
-            foreach (object item in this.comboBoxFilePath.Items)
-            {
-                string path = (string)item;
-                if (path == null)
-                    continue;
-                if (path == xmlPath)
-                    continue;
-
-                pathList.AddLast(path);
-            }
-            this.comboBoxFilePath.Items.Clear();
-
-            pathList.AddFirst(xmlPath);
-
-            int i = 0;
-            foreach (string path in pathList)
-            {
-                if (i > Properties.Settings.Default.FilePathPreserveCount)
-                    break;
-
-                this.comboBoxFilePath.Items.Add(path);
-                i++;
-            }
-            this.comboBoxFilePath.SelectedIndex = 0;
-
-            selectedXmlPath = xmlPath;
-            loadBuildXmlFromSelectedXmlPath();
-
-            this.comboBoxFilePath.SelectionChanged += comboBoxFilePath_SelectionChanged;
-        }
-
         // dirty way...
         private Brush convertColor(string color)
         {
             return (Brush)typeof(Brushes).GetProperty(color).GetValue(null, null);
+        }
+
+        private void initializeLogText()
+        {
+            this.richTextBoxLog.Document.Blocks.Clear();
+            this.richTextBoxLog.Document.Blocks.Add(new Paragraph());
         }
 
         public void AppendLogText(string text, string color)
@@ -162,31 +92,9 @@ namespace MsbuildLauncher
             this.richTextBoxLog.ScrollToEnd();
         }
 
-        private System.Diagnostics.Process agentProcess = null;
-        private void startBuild(string xmlPath, string targetName)
+        void mainViewModel_SupposeLogInitialized(object sender, EventArgs e)
         {
-            this.mainViewModel.IsBuildInProgress = true;
-
-            System.Threading.Tasks.Task.Factory.StartNew(() => {
-                try {
-                    System.Diagnostics.ProcessStartInfo si = new System.Diagnostics.ProcessStartInfo();
-                    si.FileName = "MsbuildLauncher.Agent.exe";
-                    si.Arguments = String.Format("\"{0}\" \"{1}\" \"{2}\"",
-                        ((App)Application.Current).PipeName,
-                        xmlPath, targetName);
-                    si.CreateNoWindow = true;
-                    si.UseShellExecute = false;
-                    agentProcess = System.Diagnostics.Process.Start(si);
-                    agentProcess.WaitForExit();
-                    agentProcess = null;
-                } catch (Exception ex) {
-                    Dispatcher.Invoke(new Action<Exception>((ex1) => {
-                        MessageBox.Show("Failed to build: \n" + ex1.Message);
-                    }), ex);
-                }
-
-                this.mainViewModel.IsBuildInProgress = false;
-            });
+            initializeLogText();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -196,7 +104,7 @@ namespace MsbuildLauncher
             string filenameAtArgs = ((App)Application.Current).FilenameAtArgs;
             if (filenameAtArgs != null)
             {
-                loadXml(filenameAtArgs);
+                this.mainViewModel.LoadBuildXml(filenameAtArgs);
             }
         }
 
@@ -218,7 +126,7 @@ namespace MsbuildLauncher
                 return;
             }
 
-            loadXml(filenames[0]);
+            this.mainViewModel.LoadBuildXml(filenames[0]);
         }
 
         private void buttonOpen_Click(object sender, RoutedEventArgs e)
@@ -234,38 +142,43 @@ namespace MsbuildLauncher
                 fileName = dialog.FileName;
             }
 
-            loadXml(fileName);
+            this.mainViewModel.LoadBuildXml(fileName);
         }
 
         private void buttonReload_Click(object sender, RoutedEventArgs e)
         {
-            loadBuildXmlFromSelectedXmlPath();
+            if (this.mainViewModel.SelectedXmlPath == null)
+            {
+                MessageBox.Show("MSBuild file is not selected.", Const.ApplicationName);
+                return;
+            }
+
+            this.mainViewModel.LoadBuildXml(this.mainViewModel.SelectedXmlPath);
         }
 
         private void buttonBuild_Click(object sender, RoutedEventArgs e)
         {
-            initializeLogText();
-            startBuild(selectedXmlPath, null);
+            this.mainViewModel.StartBuild(null);
         }
 
         private void buttonTarget_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-
-            initializeLogText();
-            startBuild(selectedXmlPath, (string)button.DataContext);
+            this.mainViewModel.StartBuild((string)button.DataContext);
         }
 
         private void comboBoxFilePath_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.selectedXmlPath = (string)this.comboBoxFilePath.SelectedItem;
-            loadBuildXmlFromSelectedXmlPath();
+            this.comboBoxFilePath.SelectionChanged -= comboBoxFilePath_SelectionChanged;
+
+            this.mainViewModel.LoadBuildXml((string)this.comboBoxFilePath.SelectedItem);
+
+            this.comboBoxFilePath.SelectedIndex = 0;
+            this.comboBoxFilePath.SelectionChanged += comboBoxFilePath_SelectionChanged;
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e) {
-            if (agentProcess != null) {
-                agentProcess.Kill();
-            }
+            this.mainViewModel.KillBuild();
         }
     }
 }
