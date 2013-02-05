@@ -8,13 +8,13 @@ namespace MsbuildLauncher.Agent {
         // FIXME: duplicated
         const ConsoleColor defaultConsoleColor = ConsoleColor.White;
 
-        static void Build(string xmlPath, string targetName, IMsbuildLogWriter logWriter) {
+        static void Build(string xmlPath, string targetName, IMsbuildLauncherApi launcherApi) {
             ConsoleColor lastColor = ConsoleColor.White;
 
             var proj = new Microsoft.Build.Evaluation.Project(xmlPath);
             var consoleLogger = new Microsoft.Build.Logging.ConsoleLogger(LoggerVerbosity.Normal,
                 (text) => {
-                    logWriter.WriteLog(text, lastColor.ToString());
+                    launcherApi.WriteLog(text, lastColor.ToString());
                 },
                 (c) => { lastColor = c; }, // set color
                 () => { lastColor = defaultConsoleColor; }); // reset color
@@ -43,14 +43,14 @@ namespace MsbuildLauncher.Agent {
             string xmlPath = args[1];
             string targetName = args[2];
 
-            ChannelFactory<IMsbuildLogWriter> channelFactory = null;
+            ChannelFactory<IMsbuildLauncherApi> channelFactory = null;
             try {
-                channelFactory = new ChannelFactory<IMsbuildLogWriter>(
+                channelFactory = new ChannelFactory<IMsbuildLauncherApi>(
                                                         new NetNamedPipeBinding(),
                                                         new EndpointAddress("net.pipe://localhost/" + pipeName));
                 channelFactory.Open();
-                IMsbuildLogWriter logWriter = channelFactory.CreateChannel();
-                Build(xmlPath, targetName, logWriter);
+                IMsbuildLauncherApi launcherApi = channelFactory.CreateChannel();
+                Build(xmlPath, targetName, launcherApi);
             } finally {
                 if (channelFactory != null) {
                     channelFactory.Close();

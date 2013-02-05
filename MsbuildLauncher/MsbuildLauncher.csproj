@@ -90,7 +90,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MsbuildLogWriter.cs" />
+    <Compile Include="MsbuildLauncherApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

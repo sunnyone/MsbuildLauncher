@@ -6,8 +6,8 @@ using System.ServiceModel;
 using System.Text;
 
 namespace MsbuildLauncher.Common {
-    [ServiceContract(ConfigurationName = "MsbuildLauncher.IMsbuildLogWriter")]
-    public interface IMsbuildLogWriter {
+    [ServiceContract(ConfigurationName = "MsbuildLauncher.IMsbuildLauncherApi")]
+    public interface IMsbuildLauncherApi {
         [OperationContract]
         void WriteLog(string text, string color);
     }

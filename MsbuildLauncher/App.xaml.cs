@@ -20,10 +20,10 @@ namespace MsbuildLauncher {
                 this.FilenameAtArgs = e.Args[0];
             }
 
-            serviceHost = new System.ServiceModel.ServiceHost(typeof(MsbuildLogWriter));
+            serviceHost = new System.ServiceModel.ServiceHost(typeof(MsbuildLauncherApi));
 
             string pipeName = "MsBuildLauncher-" + Guid.NewGuid().ToString();
-            serviceHost.AddServiceEndpoint(typeof(IMsbuildLogWriter), new System.ServiceModel.NetNamedPipeBinding(),
+            serviceHost.AddServiceEndpoint(typeof(IMsbuildLauncherApi), new System.ServiceModel.NetNamedPipeBinding(),
                                            "net.pipe://localhost/" + pipeName);
             PipeName = pipeName;
             serviceHost.Open();
