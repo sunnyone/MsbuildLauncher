@@ -8,8 +8,8 @@
     <ProjectGuid>{742574F0-063F-43CE-BEDF-E5B906F14088}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MsbuildLauncherAgent</RootNamespace>
-    <AssemblyName>MsbuildLauncherAgent</AssemblyName>
+    <RootNamespace>MsbuildLauncher.Agent</RootNamespace>
+    <AssemblyName>MsbuildLauncher.Agent</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

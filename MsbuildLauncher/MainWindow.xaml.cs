@@ -170,7 +170,7 @@ namespace MsbuildLauncher
             System.Threading.Tasks.Task.Factory.StartNew(() => {
                 try {
                     System.Diagnostics.ProcessStartInfo si = new System.Diagnostics.ProcessStartInfo();
-                    si.FileName = "MsbuildLauncherAgent.exe";
+                    si.FileName = "MsbuildLauncher.Agent.exe";
                     si.Arguments = String.Format("\"{0}\" \"{1}\" \"{2}\"",
                         ((App)Application.Current).PipeName,
                         xmlPath, targetName);

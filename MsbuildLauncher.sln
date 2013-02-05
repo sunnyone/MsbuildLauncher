@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsbuildLauncher", "MsbuildLauncher\MsbuildLauncher.csproj", "{DEAF1A6F-F521-441E-9B8F-5B621006D629}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsbuildLauncherAgent", "MsbuildLauncherAgent\MsbuildLauncherAgent.csproj", "{742574F0-063F-43CE-BEDF-E5B906F14088}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsbuildLauncher.Agent", "MsbuildLauncherAgent\MsbuildLauncher.Agent.csproj", "{742574F0-063F-43CE-BEDF-E5B906F14088}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsbuildLauncher.Common", "MsbuildLauncher.Common\MsbuildLauncher.Common.csproj", "{4C0C1CDD-A54F-413F-90C4-26DA9962DEAD}"
 EndProject

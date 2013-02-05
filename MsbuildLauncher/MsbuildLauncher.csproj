@@ -123,9 +123,9 @@
       <Project>{4C0C1CDD-A54F-413F-90C4-26DA9962DEAD}</Project>
       <Name>MsbuildLauncher.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MsbuildLauncherAgent\MsbuildLauncherAgent.csproj">
+    <ProjectReference Include="..\MsbuildLauncherAgent\MsbuildLauncher.Agent.csproj">
       <Project>{742574F0-063F-43CE-BEDF-E5B906F14088}</Project>
-      <Name>MsbuildLauncherAgent</Name>
+      <Name>MsbuildLauncher.Agent</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
