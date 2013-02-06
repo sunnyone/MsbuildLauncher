@@ -93,6 +93,21 @@ namespace MsbuildLauncher.ViewModel
             }
         }
 
+        private void clearTargetNameList()
+        {
+            this.TargetNameList.Clear();
+        }
+
+        private void clearProperties()
+        {
+            foreach (var propItem in this.CommonPropertyList)
+            {
+                propItem.DefaultValue = null;
+                propItem.Value = null;
+                propItem.IsChanged = false;
+            }
+        }
+
         public void LoadBuildXml(string xmlPath)
         {
             if (SupposeLogInitialized != null)
@@ -100,18 +115,35 @@ namespace MsbuildLauncher.ViewModel
                 SupposeLogInitialized(this, new EventArgs());
             }
 
-            this.TargetNameList.Clear();
+            clearTargetNameList();
+            clearProperties();
 
             updateHistory(xmlPath);
 
-            List<string> targetNameList = new List<string>();
             try
             {
                 var project = new Microsoft.Build.Evaluation.Project(xmlPath);
+                
+                // load target names
                 foreach (var kvp in project.Targets)
                 {
-                    targetNameList.Add(kvp.Key);
+                    this.TargetNameList.Add(kvp.Key);
                 }
+
+                // load properties
+                foreach (var prop in project.Properties)
+                {
+                    foreach (var propItem in this.CommonPropertyList)
+                    {
+                        if (propItem.Name == prop.Name)
+                        {
+                            propItem.Value = prop.UnevaluatedValue;
+                            propItem.DefaultValue = prop.UnevaluatedValue;
+                            propItem.IsChanged = false;
+                        }
+                    }
+                }
+
                 project.ProjectCollection.UnloadAllProjects();
             }
             catch (Exception ex)
@@ -120,11 +152,6 @@ namespace MsbuildLauncher.ViewModel
                 MessageBox.Show("Failed to load msbuild file: \n" + ex.Message, Const.ApplicationName);
 
                 return;
-            }
-
-            foreach (var name in targetNameList)
-            {
-                this.TargetNameList.Add(name);
             }
 
             this.SelectedXmlPath = xmlPath;

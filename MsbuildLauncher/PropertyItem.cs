@@ -19,7 +19,7 @@ namespace MsbuildLauncher
 
         public string DefaultValue { get; set; }
 
-        // for WPF
+
         void valuePropertyChanged()
         {
             if (this.PropertyChanged != null)
