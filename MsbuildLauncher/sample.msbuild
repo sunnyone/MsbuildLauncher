@@ -1,0 +1,40 @@
+<Project DefaultTargets="Build;Install"  
+ xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+     <!-- MsbuildLauncherProperties = 
+	   [ {"Name": "MyProperty1"},
+	     {"Name": "MyProperty2"},
+	     {"Name": "MyProperty3", "Items": ["Apple", "Orange", "Banana"] }
+	   ]
+	 -->
+
+    <PropertyGroup>
+        <ProjectName>MsBuildSample</ProjectName>
+		<MyProperty1>This is default value</MyProperty1>
+		<MyProperty3>Banana</MyProperty3>
+    </PropertyGroup>
+	
+    <ItemGroup>
+    </ItemGroup>
+
+    <Target Name="Build" >
+      <Message Text="BUILD!!!" />
+    </Target>
+
+    <Target Name="Install" >
+      <Message Text="INSTALL!" />
+    </Target>
+
+    <Target Name="Clean" >
+      <Message Text="CLEAN!" />
+    </Target>
+
+	<Target Name="ShowProperties">
+	  <Message Text="$(MyProperty1)" />
+	  <Message Text="$(MyProperty3)" />
+	</Target>
+
+    <Target Name="Notepad">
+      <Exec Command="notepad.exe" />
+    </Target>
+	
+	</Project>
