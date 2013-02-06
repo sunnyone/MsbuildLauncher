@@ -11,7 +11,8 @@ namespace MsbuildLauncher
         public string XmlPath { get; set; }
         public string TargetName { get; set; }
         public string PipeName { get; set; }
-
+        public List<KeyValuePair<string, string>> PropertyList { get; set; }
+ 
         private System.Diagnostics.Process agentProcess = null;
 
         public System.Threading.Tasks.Task BuildAsync()

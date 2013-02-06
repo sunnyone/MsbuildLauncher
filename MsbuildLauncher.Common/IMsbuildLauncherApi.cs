@@ -16,6 +16,9 @@ namespace MsbuildLauncher.Common {
         string GetTargetName();
 
         [OperationContract]
+        List<KeyValuePair<string, string>> GetProperties();
+
+        [OperationContract]
         void WriteLog(string text, string color);
     }
 }

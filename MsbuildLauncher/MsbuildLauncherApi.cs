@@ -33,5 +33,15 @@ namespace MsbuildLauncher {
 
             return mainViewModel.BuildContext.TargetName;
         }
+
+        public List<KeyValuePair<string, string>> GetProperties()
+        {
+            var mainViewModel = ((App)App.Current).MainViewModel;
+
+            if (mainViewModel.BuildContext == null)
+                return null;
+
+            return mainViewModel.BuildContext.PropertyList;
+        }
     }
 }

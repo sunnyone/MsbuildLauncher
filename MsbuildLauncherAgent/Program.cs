@@ -13,6 +13,7 @@ namespace MsbuildLauncher.Agent {
 
             string xmlPath = launcherApi.GetXmlPath();
             string targetName = launcherApi.GetTargetName();
+            var propertyList = launcherApi.GetProperties();
 
             var proj = new Microsoft.Build.Evaluation.Project(xmlPath);
             var consoleLogger = new Microsoft.Build.Logging.ConsoleLogger(LoggerVerbosity.Normal,
@@ -23,7 +24,12 @@ namespace MsbuildLauncher.Agent {
                 () => { lastColor = defaultConsoleColor; }); // reset color
 
             ILogger[] loggers = new ILogger[] { consoleLogger };
-            
+
+            foreach (var prop in propertyList)
+            {
+                proj.SetProperty(prop.Key, prop.Value);
+            }
+
             if (string.IsNullOrEmpty(targetName))
             {
                 proj.Build(loggers);

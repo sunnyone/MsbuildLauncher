@@ -209,6 +209,17 @@ namespace MsbuildLauncher.ViewModel
             BuildContext.XmlPath = this.SelectedXmlPath;
             BuildContext.PipeName = ((App) Application.Current).PipeName;
 
+            var list = new List<KeyValuePair<string, string>>();
+            foreach (var propItem in this.CommonPropertyList.Union(this.FilePropertyList))
+            {
+                if (!propItem.IsChanged)
+                    continue;
+
+                list.Add(new KeyValuePair<string, string>(propItem.Name, propItem.Value));
+            }
+            BuildContext.PropertyList = list;
+
+
             var task = BuildContext.BuildAsync();
 
             task.ContinueWith((t) =>
