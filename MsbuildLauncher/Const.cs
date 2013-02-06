@@ -8,5 +8,7 @@ namespace MsbuildLauncher
     public static class Const
     {
         public const string ApplicationName = "MSBuild Launcher";
+
+        public const string CommonPropertiesFilename = "CommonProperties.json";
     }
 }

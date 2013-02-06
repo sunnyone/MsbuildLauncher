@@ -35,6 +35,15 @@ namespace MsbuildLauncher {
 
             var mainWindow = new MainWindow(this.MainViewModel);
 
+            try
+            {
+                this.MainViewModel.CreateCommonProperties(System.IO.File.ReadAllText(Const.CommonPropertiesFilename));
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Failed to load " + Const.CommonPropertiesFilename + ": " + ex.ToString());
+            }
+
             this.MainWindow = mainWindow;
             this.MainWindow.Show();
         }

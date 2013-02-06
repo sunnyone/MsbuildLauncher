@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="MsbuildLauncher.PropertiesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:MsbuildLauncher"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    <UserControl.Resources>
+        <local:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter" />
+    </UserControl.Resources>
+    
+    <ItemsControl ItemsSource="{Binding}" >
+        <ItemsControl.Resources>
+            <Style TargetType="Label">
+                <Setter Property="MinWidth" Value="100" />
+                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            </Style>
+
+            <Style TargetType="DockPanel">
+                <Setter Property="Margin" Value="2" />
+            </Style>
+        </ItemsControl.Resources>
+        
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left" Content="{Binding Name}" />
+                    <ToggleButton DockPanel.Dock="Right" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <StackPanel>
+                        <TextBox Text="{Binding Value}"
+                                 Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=VisibleIfNull}" />
+                        <ComboBox SelectedValue="{Binding Value}" ItemsSource="{Binding Items}"
+                                 Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=CollapsedIfNull}"/>
+                    </StackPanel>
+                </DockPanel>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>

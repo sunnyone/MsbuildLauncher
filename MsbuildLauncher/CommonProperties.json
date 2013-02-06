@@ -1,0 +1,10 @@
+﻿[
+  {
+    "Name": "Configuration",
+    "Items": ["Debug", "Release"]
+  },
+  { 
+    "Name": "Platform",
+    "Items": null,
+  }
+]

@@ -84,22 +84,11 @@
             <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Right" Background="{StaticResource NormalBorderBrush}"/>
 
             <StackPanel Grid.Column="2" Background="{StaticResource WindowBackgroundBrush}">
-                <StackPanel.Resources>
-                    <Style TargetType="Label">
-                        <Setter Property="MinWidth" Value="100" />
-                        <Setter Property="HorizontalContentAlignment" Value="Right" />
-                        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-                    </Style>
-                    
-                    <Style TargetType="DockPanel">
-                        <Setter Property="Margin" Value="2" />
-                    </Style>
-                </StackPanel.Resources>
-                
                 <Expander Name="expanderCommonProperties" Header="Common Properties" IsExpanded="True">
+                    <local:PropertiesControl DataContext="{Binding CommonPropertyList}" />
                 </Expander>
 
-                <Expander Name="expanderFileProperties" Header="File Properties" IsExpanded="True">
+                <Expander Name="expanderFileProperties" Header="File Properties" IsExpanded="True" ToolTip="Properties embedded in a MSBuild file">
                 </Expander>
             </StackPanel>
         </Grid>

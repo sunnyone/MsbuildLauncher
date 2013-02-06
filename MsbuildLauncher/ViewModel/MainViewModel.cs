@@ -59,6 +59,12 @@ namespace MsbuildLauncher.ViewModel
             get { return historyPathList; }
         }
 
+        private ObservableCollection<PropertyItem> commonPropertyList = new ObservableCollection<PropertyItem>();
+        public ObservableCollection<PropertyItem> CommonPropertyList
+        {
+            get { return commonPropertyList; }
+        }
+
         private string selectedXmlPath;
 
         public string SelectedXmlPath
@@ -175,5 +181,17 @@ namespace MsbuildLauncher.ViewModel
                 SupposeLogOutput(this, new LogOutputEventArgs() {Color = color, Text = text});
             }
         }
+
+        public void CreateCommonProperties(string jsonText)
+        {
+            var items = JsonUtil.Parse<PropertyItem[]>(jsonText);
+            this.CommonPropertyList.Clear();
+            foreach (var item in items)
+            {
+                this.CommonPropertyList.Add(item);
+            }
+        }
+
+
     }
 }
