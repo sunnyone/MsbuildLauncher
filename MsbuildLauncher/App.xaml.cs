@@ -32,7 +32,10 @@ namespace MsbuildLauncher {
             serviceHost.Open();
 
             this.MainViewModel = new MainViewModel();
-            this.MainWindow = new MainWindow(this.MainViewModel);
+
+            var mainWindow = new MainWindow(this.MainViewModel);
+
+            this.MainWindow = mainWindow;
             this.MainWindow.Show();
         }
 

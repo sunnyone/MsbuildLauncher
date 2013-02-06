@@ -11,6 +11,7 @@
     
     <Window.Resources>
         <local:BooleanNotConverter x:Key="BooleanNotConverter" />
+        
     </Window.Resources>
     
     <DockPanel>
@@ -48,6 +49,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
 
             <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Left"
@@ -79,6 +81,27 @@
             <RichTextBox Name="richTextBoxLog" VerticalScrollBarVisibility="Visible" IsReadOnly="True" Grid.Column="1">
             </RichTextBox>
 
+            <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Right" Background="{StaticResource NormalBorderBrush}"/>
+
+            <StackPanel Grid.Column="2" Background="{StaticResource WindowBackgroundBrush}">
+                <StackPanel.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="MinWidth" Value="100" />
+                        <Setter Property="HorizontalContentAlignment" Value="Right" />
+                        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+                    </Style>
+                    
+                    <Style TargetType="DockPanel">
+                        <Setter Property="Margin" Value="2" />
+                    </Style>
+                </StackPanel.Resources>
+                
+                <Expander Name="expanderCommonProperties" Header="Common Properties" IsExpanded="True">
+                </Expander>
+
+                <Expander Name="expanderFileProperties" Header="File Properties" IsExpanded="True">
+                </Expander>
+            </StackPanel>
         </Grid>
         
     </DockPanel>
