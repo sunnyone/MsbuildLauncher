@@ -141,24 +141,38 @@ namespace MsbuildLauncher
             this.mainViewModel.LoadBuildXml(fileName);
         }
 
-        private void buttonReload_Click(object sender, RoutedEventArgs e)
+        private bool validateFileSelected()
         {
             if (this.mainViewModel.SelectedXmlPath == null)
             {
                 MessageBox.Show("MSBuild file is not selected.", Const.ApplicationName);
-                return;
+                return false;
             }
+
+            return true;
+        }
+
+        private void buttonReload_Click(object sender, RoutedEventArgs e)
+        {
+            if (!validateFileSelected())
+                return;
 
             this.mainViewModel.LoadBuildXml(this.mainViewModel.SelectedXmlPath);
         }
 
         private void buttonBuild_Click(object sender, RoutedEventArgs e)
         {
+            if (!validateFileSelected())
+                return;
+
             this.mainViewModel.StartBuild(null);
         }
 
         private void buttonTarget_Click(object sender, RoutedEventArgs e)
         {
+            if (!validateFileSelected())
+                return;
+
             Button button = (Button)sender;
             this.mainViewModel.StartBuild((string)button.DataContext);
         }
@@ -179,11 +193,8 @@ namespace MsbuildLauncher
 
         private void buttonEdit_OnClick(object sender, RoutedEventArgs e)
         {
-            if (this.mainViewModel.SelectedXmlPath == null)
-            {
-                MessageBox.Show("MSBuild file is not selected.", Const.ApplicationName);
+            if (!validateFileSelected())
                 return;
-            }
 
             string exePath = FileAssocUtil.GetAssocExecutable(".xml");
             if (exePath == null)
