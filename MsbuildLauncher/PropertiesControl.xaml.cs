@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace MsbuildLauncher
 {
-    /// <summary>
-    /// PropertiesControl.xaml の相互作用ロジック
-    /// </summary>
     public partial class PropertiesControl : UserControl
     {
         public PropertiesControl()
