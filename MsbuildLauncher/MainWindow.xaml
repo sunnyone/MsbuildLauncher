@@ -89,6 +89,7 @@
                 </Expander>
 
                 <Expander Name="expanderFileProperties" Header="File Properties" IsExpanded="True" ToolTip="Properties embedded in a MSBuild file">
+                    <local:PropertiesControl DataContext="{Binding FilePropertyList}" />
                 </Expander>
             </StackPanel>
         </Grid>

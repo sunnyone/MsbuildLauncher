@@ -29,6 +29,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using System.Text.RegularExpressions;
 
 namespace MsbuildLauncher.ViewModel
 {
@@ -65,6 +66,13 @@ namespace MsbuildLauncher.ViewModel
             get { return commonPropertyList; }
         }
 
+        private ObservableCollection<PropertyItem> filePropertyList = new ObservableCollection<PropertyItem>();
+        public ObservableCollection<PropertyItem> FilePropertyList
+        {
+            get { return filePropertyList; }
+        }
+
+
         private string selectedXmlPath;
 
         public string SelectedXmlPath
@@ -98,7 +106,7 @@ namespace MsbuildLauncher.ViewModel
             this.TargetNameList.Clear();
         }
 
-        private void clearProperties()
+        private void clearCommonProperties()
         {
             foreach (var propItem in this.CommonPropertyList)
             {
@@ -106,6 +114,24 @@ namespace MsbuildLauncher.ViewModel
                 propItem.Value = null;
                 propItem.IsChanged = false;
             }
+        }
+
+        private void clearFileProperties()
+        {
+            this.FilePropertyList.Clear();
+        }
+
+        private void parseAndCreateFileProperties(string xmlPath)
+        {
+            string xml = System.IO.File.ReadAllText(xmlPath);
+            //Regex r = new Regex(@"<!-- *MsbuildLauncherProperties *= *(.+?)-->", RegexOptions.Multiline);
+            Regex r = new Regex(@"<!--\s*MsbuildLauncherProperties\s*=(.+?)-->", RegexOptions.Singleline);
+            Match m = r.Match(xml);
+            if (!m.Success)
+                return;
+
+            string jsonText = m.Groups[1].Captures[0].Value;
+            CreateFileProperties(jsonText);
         }
 
         public void LoadBuildXml(string xmlPath)
@@ -116,12 +142,15 @@ namespace MsbuildLauncher.ViewModel
             }
 
             clearTargetNameList();
-            clearProperties();
+            clearCommonProperties();
+            clearFileProperties();
 
             updateHistory(xmlPath);
 
             try
             {
+                parseAndCreateFileProperties(xmlPath);
+
                 var project = new Microsoft.Build.Evaluation.Project(xmlPath);
                 
                 // load target names
@@ -131,18 +160,25 @@ namespace MsbuildLauncher.ViewModel
                 }
 
                 // load properties
-                foreach (var prop in project.Properties)
+                foreach (var propItem in this.CommonPropertyList.Union(this.FilePropertyList))
                 {
-                    foreach (var propItem in this.CommonPropertyList)
+                    bool isEnabled = false;
+
+                    foreach (var prop in project.Properties)
                     {
                         if (propItem.Name == prop.Name)
                         {
                             propItem.Value = prop.UnevaluatedValue;
                             propItem.DefaultValue = prop.UnevaluatedValue;
                             propItem.IsChanged = false;
+
+                            isEnabled = true;
                         }
                     }
+
+                    propItem.IsEnabled = isEnabled;
                 }
+
 
                 project.ProjectCollection.UnloadAllProjects();
             }
@@ -219,6 +255,14 @@ namespace MsbuildLauncher.ViewModel
             }
         }
 
-
+        public void CreateFileProperties(string jsonText)
+        {
+            var items = JsonUtil.Parse<PropertyItem[]>(jsonText);
+            this.FilePropertyList.Clear();
+            foreach (var item in items)
+            {
+                this.FilePropertyList.Add(item);
+            }
+        }
     }
 }

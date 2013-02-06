@@ -32,7 +32,7 @@
 
         <ItemsControl.ItemTemplate>
             <DataTemplate>
-                <DockPanel>
+                <DockPanel IsEnabled="{Binding IsEnabled}">
                     <Label DockPanel.Dock="Left" Content="{Binding Name}" />
                     <ToggleButton 
                         ToolTip="Is the value changed: only changed values used for building"

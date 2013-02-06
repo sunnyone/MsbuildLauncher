@@ -11,6 +11,8 @@ namespace MsbuildLauncher
     [DataContract]
     public class PropertyItem : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [DataMember]
         public string Name { get; set; }
 
@@ -61,7 +63,18 @@ namespace MsbuildLauncher
                 isChangedPropertyChanged();
             }
         }
+        
+        void isEnabledPropertyChanged()
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs("IsEnabled"));
+        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private bool isEnabled;
+        public bool IsEnabled
+        {
+            get { return isEnabled; }
+            set { isEnabled = value; isEnabledPropertyChanged(); }
+        }
     }
 }
