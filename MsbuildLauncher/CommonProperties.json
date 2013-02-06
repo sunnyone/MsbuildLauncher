@@ -5,6 +5,6 @@
   },
   { 
     "Name": "Platform",
-    "Items": null,
+    "Items": ["x86", "x64"],
   }
 ]
