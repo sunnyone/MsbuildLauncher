@@ -47,9 +47,9 @@
         
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150" />
+                <ColumnDefinition Name="columnDefinitionTarget" Width="150" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Name="columnDefinitionProperty" Width="200" />
             </Grid.ColumnDefinitions>
 
             <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Left"

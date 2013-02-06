@@ -44,6 +44,8 @@ namespace MsbuildLauncher
         {
             this.Width = Properties.Settings.Default.WindowWidth;
             this.Height = Properties.Settings.Default.WindowHeight;
+            this.columnDefinitionTarget.Width = new GridLength(Properties.Settings.Default.TargetPaneWidth);
+            this.columnDefinitionProperty.Width = new GridLength(Properties.Settings.Default.PropertyPaneWidth);
 
             if (Properties.Settings.Default.FilePathHistory != null)
             {
@@ -58,6 +60,8 @@ namespace MsbuildLauncher
         {
             Properties.Settings.Default.WindowWidth = this.ActualWidth;
             Properties.Settings.Default.WindowHeight = this.ActualHeight;
+            Properties.Settings.Default.TargetPaneWidth = this.columnDefinitionTarget.ActualWidth;
+            Properties.Settings.Default.PropertyPaneWidth = this.columnDefinitionProperty.ActualWidth;
 
             StringCollection col = new StringCollection();
             foreach (object item in this.comboBoxFilePath.Items)
