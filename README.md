@@ -1,26 +1,8 @@
 MSBuild Launcher
 =================
 
-What's this?
--------------
-A tool to execute targets in a MSBuild file.
+MSBuild Launcher is moved to codeplex. 
+http://msbuildlauncher.codeplex.com/
 
-Environment
-------------
-* .NET Framework 4.0
+Newer version will not be released here.
 
-How to use?
-------------
-1. Drag and drop a msbuild file or open one with the "Open" button.
-   (The command-line argument also supported, like: MsbuildLauncher c:\temp\foobar.msbuild)
-
-2. Click a target button.
-
-Links
--------
-* WPF Themes  http://wpfthemes.codeplex.com/
-MSBuild Launcher uses the "Expression Dark" theme.
-
-Contact
---------
-Author: Yoichi Imai <sunnyone41@gmail.com>
