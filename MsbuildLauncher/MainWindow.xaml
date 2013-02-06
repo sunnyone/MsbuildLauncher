@@ -40,7 +40,7 @@
 
                 <DockPanel Background="{StaticResource WindowBackgroundBrush}">
                     <TextBlock DockPanel.Dock="Left" Margin="4,0,4,0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}">File:</TextBlock>
-                    <ComboBox Name="comboBoxFilePath" SelectionChanged="comboBoxFilePath_SelectionChanged" ItemsSource="{Binding HistoryPathList}"></ComboBox>
+                    <ComboBox Name="comboBoxFilePath" SelectionChanged="comboBoxFilePath_SelectionChanged" ItemsSource="{Binding HistoryPathList}" SelectedValue="{Binding SelectedXmlPath}"></ComboBox>
                 </DockPanel>
             </StackPanel>
         </DockPanel>
