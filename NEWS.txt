@@ -1,6 +1,15 @@
 NEWS
 =====
 
+2013-02-06  Version 0.1.0
+---------------------------
+* Added "Edit" feature.
+ * "Edit" button opens a program that is associated with ".xml" extension.
+* Added the property editor.
+ * Property definitions is loaded from "CommonProperties.json" and a comment in the msbuild file.
+ * See the "sample.msbuild" file for example.
+* Added a config to load legacy .NET assemblies (<startup useLegacyV2RuntimeActivationPolicy="true">).
+
 2012-11-10  Version 0.0.2
 ---------------------------
 * Added "Cancel" feature.
