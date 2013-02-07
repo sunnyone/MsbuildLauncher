@@ -20,5 +20,8 @@
     <Setting Name="PropertyPaneWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">200</Value>
     </Setting>
+    <Setting Name="EditorPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">%WINDIR%\notepad.exe</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

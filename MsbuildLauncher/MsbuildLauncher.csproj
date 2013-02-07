@@ -70,14 +70,17 @@
     </ApplicationDefinition>
     <Compile Include="BooleanNotConverter.cs" />
     <Compile Include="BuildContext.cs" />
-    <Compile Include="FileAssocUtil.cs" />
     <Compile Include="IsNullToVisibilityConverter.cs" />
     <Compile Include="JsonUtil.cs" />
     <Compile Include="PropertiesControl.xaml.cs">
       <DependentUpon>PropertiesControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="PropertyItem.cs" />
+    <Compile Include="SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -93,6 +96,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PropertiesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

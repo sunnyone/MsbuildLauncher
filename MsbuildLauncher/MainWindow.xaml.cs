@@ -228,17 +228,20 @@ namespace MsbuildLauncher
             if (!validateFileSelected())
                 return;
 
-            string exePath = FileAssocUtil.GetAssocExecutable(".xml");
-            if (exePath == null)
-            {
-                MessageBox.Show("Failed to get the program for .xml");
-                return;
-            }
+            string exePath = Properties.Settings.Default.EditorPath;
+            exePath = Environment.ExpandEnvironmentVariables(exePath);
 
             System.Diagnostics.ProcessStartInfo psi = new ProcessStartInfo();
             psi.FileName = exePath;
             psi.Arguments = string.Format("\"{0}\"", this.mainViewModel.SelectedXmlPath);
             System.Diagnostics.Process.Start(psi);
+        }
+
+        private void buttonSetting_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new SettingWindow();
+            window.Owner = this;
+            window.ShowDialog();
         }
     }
 }

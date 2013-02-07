@@ -11,7 +11,6 @@
     
     <Window.Resources>
         <local:BooleanNotConverter x:Key="BooleanNotConverter" />
-        
     </Window.Resources>
     
     <DockPanel>
@@ -36,6 +35,10 @@
                             Click="buttonBuild_Click"
                             IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">Build</Button>
                     <Button Name="buttonCancel" Click="buttonCancel_Click" IsEnabled="{Binding IsBuildInProgress}">Cancel</Button>
+                    
+                    <Separator />
+                    
+                    <Button Name="buttonSetting" Click="buttonSetting_Click" Content="Settings" />
                 </StackPanel>
 
                 <DockPanel Background="{StaticResource WindowBackgroundBrush}">

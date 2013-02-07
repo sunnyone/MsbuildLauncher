@@ -93,5 +93,17 @@ namespace MsbuildLauncher.Properties {
                 this["PropertyPaneWidth"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("%WINDIR%\\notepad.exe")]
+        public string EditorPath {
+            get {
+                return ((string)(this["EditorPath"]));
+            }
+            set {
+                this["EditorPath"] = value;
+            }
+        }
     }
 }
