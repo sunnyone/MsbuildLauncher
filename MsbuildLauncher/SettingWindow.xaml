@@ -11,23 +11,19 @@
             <Button Name="buttonOk" MinWidth="80" Margin="8" Content="OK" Click="buttonOk_Click" />
         </StackPanel>
 
-        <TabControl Margin="5">
-            <TabItem Header="General">
-                <StackPanel Margin="5">
-                    <StackPanel.Resources>
-                        <Style TargetType="Label">
-                            <Setter Property="MinWidth" Value="100" />
-                            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-                        </Style>
-                    </StackPanel.Resources>
+        <StackPanel Margin="5" Background="{StaticResource ShadeBrush}">
+            <StackPanel.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="MinWidth" Value="100" />
+                    <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+                </Style>
+            </StackPanel.Resources>
                     
-                    <DockPanel>
-                        <Label DockPanel.Dock="Left">Editor</Label>
-                        <Button DockPanel.Dock="Right" Name="buttonSelectEditor" Content="Select..." Click="buttonSelectEditor_Click" />
-                        <TextBox Name="textBox" Text="{Binding EditorPath}"></TextBox>
-                    </DockPanel>
-                </StackPanel>
-            </TabItem>
-        </TabControl>
+            <DockPanel>
+                <Label DockPanel.Dock="Left">Editor</Label>
+                <Button DockPanel.Dock="Right" Name="buttonSelectEditor" Content="Select..." Click="buttonSelectEditor_Click" />
+                <TextBox Name="textBox" Text="{Binding EditorPath}"></TextBox>
+            </DockPanel>
+        </StackPanel>
     </DockPanel>
 </Window>
