@@ -101,6 +101,15 @@ namespace MsbuildLauncher
             return (Brush)typeof(Brushes).GetProperty(color).GetValue(null, null);
         }
 
+        private void loadBuildXmlWithSelectionChangedDisabled(string xmlPath)
+        {
+            this.comboBoxFilePath.SelectionChanged -= comboBoxFilePath_SelectionChanged;
+
+            this.mainViewModel.LoadBuildXml(xmlPath);
+
+            this.comboBoxFilePath.SelectionChanged += comboBoxFilePath_SelectionChanged;
+        }
+
         void mainViewModel_SupposeLogInitialized(object sender, EventArgs e)
         {
             this.richTextBoxLog.Document.Blocks.Clear();
@@ -126,7 +135,7 @@ namespace MsbuildLauncher
             string filenameAtArgs = ((App)Application.Current).FilenameAtArgs;
             if (filenameAtArgs != null)
             {
-                this.mainViewModel.LoadBuildXml(filenameAtArgs);
+                loadBuildXmlWithSelectionChangedDisabled(filenameAtArgs);
             }
         }
 
@@ -148,7 +157,7 @@ namespace MsbuildLauncher
                 return;
             }
 
-            this.mainViewModel.LoadBuildXml(filenames[0]);
+            loadBuildXmlWithSelectionChangedDisabled(filenames[0]);
         }
 
         private void buttonOpen_Click(object sender, RoutedEventArgs e)
@@ -164,7 +173,7 @@ namespace MsbuildLauncher
                 fileName = dialog.FileName;
             }
 
-            this.mainViewModel.LoadBuildXml(fileName);
+            loadBuildXmlWithSelectionChangedDisabled(fileName);
         }
 
         private bool validateFileSelected()
@@ -183,7 +192,7 @@ namespace MsbuildLauncher
             if (!validateFileSelected())
                 return;
 
-            this.mainViewModel.LoadBuildXml(this.mainViewModel.SelectedXmlPath);
+            loadBuildXmlWithSelectionChangedDisabled(this.mainViewModel.SelectedXmlPath);
         }
 
         private void buttonBuild_Click(object sender, RoutedEventArgs e)
@@ -205,12 +214,9 @@ namespace MsbuildLauncher
 
         private void comboBoxFilePath_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.comboBoxFilePath.SelectionChanged -= comboBoxFilePath_SelectionChanged;
+            string xmlPath = (string)this.comboBoxFilePath.SelectedItem;
 
-            this.mainViewModel.LoadBuildXml((string)this.comboBoxFilePath.SelectedItem);
-
-            this.comboBoxFilePath.SelectedIndex = 0;
-            this.comboBoxFilePath.SelectionChanged += comboBoxFilePath_SelectionChanged;
+            loadBuildXmlWithSelectionChangedDisabled(xmlPath);
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e) {
