@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Clean;Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+	<OutputDir>$(MSBuildProjectDirectory)\build</OutputDir>
+  </PropertyGroup>
+  
+  <ItemGroup>
+     <DocFiles Include="LICENSE.txt" />
+     <DocFiles Include="LICENSE-ExpressionDark-Theme.txt" />
+     <DocFiles Include="README.txt" />
+     <DocFiles Include="NEWS.txt" />
+  </ItemGroup>
+
+  <Target Name="Clean">
+    <RemoveDir Directories="$(OutputDir)" />
+  </Target>
+  
+  <Target Name="Build" DependsOnTargets="Clean">
+    <MSBuild Targets="Build" Projects="$(MSBuildProjectDirectory)\MsbuildLauncher\MsbuildLauncher.csproj"
+             Properties="Configuration=Release;Platform=AnyCPU;OutputPath=$(OutputDir)\MsbuildLauncher" />
+
+	<ItemGroup>
+		<PdbFiles Include="$(OutputDir)\MsbuildLauncher\*.pdb" />
+	</ItemGroup>
+	<Delete Files="@(PdbFiles)" />
+	
+	<Copy SourceFiles="@(DocFiles)" DestinationFolder="$(OutputDir)\MsbuildLauncher" />
+  </Target>
+</Project>
