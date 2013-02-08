@@ -12,7 +12,7 @@ Environment
 How to use?
 ------------
 1. Drag and drop a msbuild file or open one with the "Open" button.
-   (The command-line argument also supported, like: MsbuildLauncher c:\temp\foobar.msbuild)
+   (Launching with a command-line argument also supported, like: MsbuildLauncher c:\temp\foobar.msbuild)
 
 2. Click a target button.
 

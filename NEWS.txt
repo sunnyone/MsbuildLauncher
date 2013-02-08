@@ -1,6 +1,12 @@
 NEWS
 =====
 
+2013-02-09  Version 0.1.2
+---------------------------
+* Build the exe for x86 instead of AnyCPU to load x86 assemblies.
+** Most assemblies seems to be compiled with x86.
+* Show an error message in the log console.
+
 2013-02-07  Version 0.1.1
 ---------------------------
 * Added the setting of editor.
