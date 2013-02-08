@@ -84,6 +84,15 @@ namespace MsbuildLauncher.ViewModel
         // TODO: use action
         public event EventHandler SupposeLogInitialized;
         public event EventHandler<LogOutputEventArgs> SupposeLogOutput;
+        public event EventHandler<LogOutputEventArgs> SupposeNotifyError;
+
+        private void supposeNotifyError(string text)
+        {
+            if (SupposeNotifyError != null)
+            {
+                SupposeNotifyError(this, new LogOutputEventArgs() { Text = text });
+            }
+        }
 
         private void updateHistory(string xmlPath)
         {
@@ -184,9 +193,7 @@ namespace MsbuildLauncher.ViewModel
             }
             catch (Exception ex)
             {
-                // TODO: do not to show a message box directly
-                MessageBox.Show("Failed to load msbuild file: \n" + ex.Message, Const.ApplicationName);
-
+                supposeNotifyError("Failed to load msbuild file: \n" + ex.Message);
                 return;
             }
 
@@ -224,10 +231,9 @@ namespace MsbuildLauncher.ViewModel
 
             task.ContinueWith((t) =>
             {
-                // TODO: use action
                 Application.Current.Dispatcher.Invoke(new Action<Exception>((ex1) =>
                 {
-                    MessageBox.Show("Failed to build: \n" + ex1.Message);
+                    supposeNotifyError("Failed to build: \n" + ex1.Message);
                 }), t.Exception.InnerException);
             }, TaskContinuationOptions.OnlyOnFaulted);
             

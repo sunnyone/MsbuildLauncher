@@ -57,6 +57,7 @@ namespace MsbuildLauncher
 
             mainViewModel.SupposeLogInitialized += new EventHandler(mainViewModel_SupposeLogInitialized);
             mainViewModel.SupposeLogOutput += new EventHandler<LogOutputEventArgs>(mainViewModel_SupposeLogOutput);
+            mainViewModel.SupposeNotifyError += new EventHandler<LogOutputEventArgs>(mainViewModel_SupposeNotifyError);
         }
 
 
@@ -110,6 +111,23 @@ namespace MsbuildLauncher
             this.comboBoxFilePath.SelectionChanged += comboBoxFilePath_SelectionChanged;
         }
 
+        private void outputLog(string text, string color)
+        {
+            Span span = new Span();
+            span.Foreground = convertColor(color);
+            span.Inlines.Add(text);
+
+            Paragraph p = (Paragraph)this.richTextBoxLog.Document.Blocks.Last();
+            p.Inlines.Add(span);
+
+            this.richTextBoxLog.ScrollToEnd();
+        }
+
+        private void notifyErrorMessage(string text)
+        {
+            outputLog(text, "Red");
+        }
+
         void mainViewModel_SupposeLogInitialized(object sender, EventArgs e)
         {
             this.richTextBoxLog.Document.Blocks.Clear();
@@ -118,15 +136,14 @@ namespace MsbuildLauncher
 
         void mainViewModel_SupposeLogOutput(object sender, LogOutputEventArgs e)
         {
-            Span span = new Span();
-            span.Foreground = convertColor(e.Color);
-            span.Inlines.Add(e.Text);
-
-            Paragraph p = (Paragraph)this.richTextBoxLog.Document.Blocks.Last();
-            p.Inlines.Add(span);
-
-            this.richTextBoxLog.ScrollToEnd();
+            outputLog(e.Text, e.Color);
         }
+
+        void mainViewModel_SupposeNotifyError(object sender, LogOutputEventArgs e)
+        {
+            notifyErrorMessage(e.Text); // e.Color is not set
+        }
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -180,7 +197,7 @@ namespace MsbuildLauncher
         {
             if (this.mainViewModel.SelectedXmlPath == null)
             {
-                MessageBox.Show("MSBuild file is not selected.", Const.ApplicationName);
+                notifyErrorMessage("MSBuild file is not selected.");
                 return false;
             }
 
