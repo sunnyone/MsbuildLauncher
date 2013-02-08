@@ -18,7 +18,7 @@
   
   <Target Name="Build" DependsOnTargets="Clean">
     <MSBuild Targets="Build" Projects="$(MSBuildProjectDirectory)\MsbuildLauncher\MsbuildLauncher.csproj"
-             Properties="Configuration=Release;Platform=AnyCPU;OutputPath=$(OutputDir)\MsbuildLauncher" />
+             Properties="Configuration=Release;Platform=x86;OutputPath=$(OutputDir)\MsbuildLauncher" />
 
 	<ItemGroup>
 		<PdbFiles Include="$(OutputDir)\MsbuildLauncher\*.pdb" />
