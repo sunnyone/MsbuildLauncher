@@ -89,6 +89,9 @@ namespace MsbuildLauncher
             StringCollection col = new StringCollection();
             foreach (object item in this.comboBoxFilePath.Items)
             {
+                if (item == null)
+                    continue;
+
                 col.Add((string)item);
             }
             Properties.Settings.Default.FilePathHistory = col;
