@@ -232,6 +232,8 @@ namespace MsbuildLauncher
         private void comboBoxFilePath_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string xmlPath = (string)this.comboBoxFilePath.SelectedItem;
+            if (xmlPath == null)
+                return;
 
             loadBuildXmlWithSelectionChangedDisabled(xmlPath);
         }
