@@ -14,7 +14,7 @@
     <ItemsControl ItemsSource="{Binding}" >
         <ItemsControl.Resources>
             <Style TargetType="Label">
-                <Setter Property="MinWidth" Value="100" />
+                <Setter Property="MinWidth" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PropertiesControl}}, Path=NameWidth}" />
                 <Setter Property="HorizontalContentAlignment" Value="Right" />
                 <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             </Style>
@@ -33,7 +33,9 @@
         <ItemsControl.ItemTemplate>
             <DataTemplate>
                 <DockPanel IsEnabled="{Binding IsEnabled}">
-                    <Label DockPanel.Dock="Left" Content="{Binding Name}" />
+                    <Label DockPanel.Dock="Left" ToolTip="{Binding Name}">
+                        <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Name}" />
+                    </Label>
                     <ToggleButton 
                         ToolTip="Is the value changed: only changed values used for building"
                         DockPanel.Dock="Right" Width="12" Height="12" 

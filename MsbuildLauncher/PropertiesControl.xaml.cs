@@ -42,5 +42,24 @@ namespace MsbuildLauncher
         {
             InitializeComponent();
         }
+
+        public int NameWidth
+        {
+            get
+            {
+                return (int)GetValue(NameWidthProperty);
+            }
+            set
+            {
+                SetValue(NameWidthProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty NameWidthProperty =
+            DependencyProperty.Register("NameWidth",
+                typeof(int),
+                typeof(PropertiesControl),
+                new UIPropertyMetadata(100));
+
     }
 }

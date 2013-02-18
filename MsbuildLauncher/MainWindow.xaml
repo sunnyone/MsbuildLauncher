@@ -91,7 +91,7 @@
                     <local:PropertiesControl DataContext="{Binding CommonPropertyList}" />
                 </Expander>
 
-                <Expander Name="expanderFileProperties" Header="File Properties" IsExpanded="True" ToolTip="Properties embedded in a MSBuild file">
+                <Expander Name="expanderFileProperties" Header="File Properties" IsExpanded="True">
                     <local:PropertiesControl DataContext="{Binding FilePropertyList}" />
                 </Expander>
             </StackPanel>
