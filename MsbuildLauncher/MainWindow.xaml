@@ -55,7 +55,7 @@
                 <ColumnDefinition Name="columnDefinitionProperty" Width="200" />
             </Grid.ColumnDefinitions>
 
-            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Left"
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" 
                           Background="{StaticResource ControlBackgroundBrush}">
                 <Expander Header="Targets" Background="{StaticResource WindowBackgroundBrush}" IsExpanded="True" IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">
                     <ItemsControl ItemsSource="{Binding TargetNameList}" >
@@ -86,15 +86,20 @@
 
             <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Right" Background="{StaticResource NormalBorderBrush}"/>
 
-            <StackPanel Name="stackPanelProperties" Grid.Column="2" Background="{StaticResource WindowBackgroundBrush}" SizeChanged="stackPanelProperties_SizeChanged">
-                <Expander Name="expanderCommonProperties" Header="Common Properties" IsExpanded="True">
-                    <local:PropertiesControl x:Name="propertiesControlCommon" DataContext="{Binding CommonPropertyList}" />
-                </Expander>
+            <ScrollViewer Name="scrollViewerProperties"
+                HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                Background="{StaticResource ControlBackgroundBrush}" Grid.Column="2"
+                SizeChanged="scrollViewerProperties_SizeChanged">
+                <StackPanel Background="{StaticResource WindowBackgroundBrush}">
+                    <Expander Name="expanderCommonProperties" Header="Common Properties" IsExpanded="True">
+                        <local:PropertiesControl x:Name="propertiesControlCommon" DataContext="{Binding CommonPropertyList}" />
+                    </Expander>
 
-                <Expander Name="expanderFileProperties" Header="File Properties" IsExpanded="True">
-                    <local:PropertiesControl x:Name="propertiesControlFile" DataContext="{Binding FilePropertyList}" />
-                </Expander>
-            </StackPanel>
+                    <Expander Name="expanderFileProperties" Header="File Properties" IsExpanded="True">
+                        <local:PropertiesControl x:Name="propertiesControlFile" DataContext="{Binding FilePropertyList}" />
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
         
     </DockPanel>

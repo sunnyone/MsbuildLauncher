@@ -267,7 +267,7 @@ namespace MsbuildLauncher
         }
 
         const double NameWidthPercent = 0.35;
-        private void stackPanelProperties_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void scrollViewerProperties_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             int nameWidth = (int)(e.NewSize.Width * NameWidthPercent);
 
