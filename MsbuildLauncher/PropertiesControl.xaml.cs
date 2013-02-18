@@ -42,5 +42,14 @@ namespace MsbuildLauncher
         {
             InitializeComponent();
         }
+
+        const int resizeMargin = 10;
+        const int minimumWidth = 10;
+
+        private void ListView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.gridViewColumnContent.Width = Math.Max(minimumWidth, 
+                e.NewSize.Width - this.gridViewColumnLabel.ActualWidth - this.gridViewColumnIsChanged.ActualWidth - resizeMargin);
+        }
     }
 }

@@ -10,45 +10,58 @@
     <UserControl.Resources>
         <local:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter" />
     </UserControl.Resources>
-    
-    <ItemsControl ItemsSource="{Binding}" >
-        <ItemsControl.Resources>
-            <Style TargetType="Label">
-                <Setter Property="MinWidth" Value="100" />
-                <Setter Property="HorizontalContentAlignment" Value="Right" />
-                <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-            </Style>
 
-            <Style TargetType="DockPanel">
-                <Setter Property="Margin" Value="2" />
+    <ListView ItemsSource="{Binding}" SizeChanged="ListView_SizeChanged" Background="{StaticResource ControlBackgroundBrush}">
+        <ListView.ItemContainerStyle>
+            <Style TargetType="{x:Type ListViewItem}">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             </Style>
-        </ItemsControl.Resources>
+        </ListView.ItemContainerStyle>
         
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel />
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
+        <ListView.View>
+            <GridView x:Name="gridView">
+                <GridView.ColumnHeaderContainerStyle>
+                    <Style TargetType="{x:Type GridViewColumnHeader}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </Style>
+                </GridView.ColumnHeaderContainerStyle>
+                
+                <GridViewColumn x:Name="gridViewColumnLabel" Width="Auto">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label DockPanel.Dock="Left" Content="{Binding Name}" />
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
 
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <DockPanel IsEnabled="{Binding IsEnabled}">
-                    <Label DockPanel.Dock="Left" Content="{Binding Name}" />
-                    <ToggleButton 
-                        ToolTip="Is the value changed: only changed values used for building"
-                        DockPanel.Dock="Right" Width="12" Height="12" 
-                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                        IsChecked="{Binding IsChanged}" />
-                    <StackPanel>
-                        <TextBox 
-                            Name="textBoxValue"
-                            Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
-                            Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=VisibleIfNull}" />
-                        <ComboBox SelectedValue="{Binding Value}" ItemsSource="{Binding Items}" IsEditable="True"
-                                 Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=CollapsedIfNull}"/>
-                    </StackPanel>
-                </DockPanel>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+                <GridViewColumn x:Name="gridViewColumnContent">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                                <StackPanel>
+                                    <TextBox 
+                                        Name="textBoxValue"
+                                        Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                        Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=VisibleIfNull}" />
+                                    <ComboBox SelectedValue="{Binding Value}" ItemsSource="{Binding Items}" IsEditable="True"
+                                        Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=CollapsedIfNull}"/>
+                                </StackPanel>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+
+                <GridViewColumn x:Name="gridViewColumnIsChanged" Width="20">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <ToggleButton 
+                                ToolTip="Is the value changed: only changed values used for building"
+                                Width="10" Height="10" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Margin="0"
+                                IsChecked="{Binding IsChanged}" />
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+            </GridView>
+        </ListView.View>
+    </ListView>
 </UserControl>
