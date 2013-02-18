@@ -44,7 +44,7 @@
                             Name="textBoxValue"
                             Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
                             Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=VisibleIfNull}" />
-                        <ComboBox SelectedValue="{Binding Value}" ItemsSource="{Binding Items}"
+                        <ComboBox SelectedValue="{Binding Value}" ItemsSource="{Binding Items}" IsEditable="True"
                                  Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=CollapsedIfNull}"/>
                     </StackPanel>
                 </DockPanel>
