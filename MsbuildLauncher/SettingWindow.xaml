@@ -14,7 +14,7 @@
         <StackPanel Margin="5" Background="{StaticResource ShadeBrush}">
             <StackPanel.Resources>
                 <Style TargetType="Label">
-                    <Setter Property="MinWidth" Value="100" />
+                    <Setter Property="MinWidth" Value="150" />
                     <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
                 </Style>
             </StackPanel.Resources>
@@ -22,7 +22,12 @@
             <DockPanel>
                 <Label DockPanel.Dock="Left">Editor</Label>
                 <Button DockPanel.Dock="Right" Name="buttonSelectEditor" Content="Select..." Click="buttonSelectEditor_Click" />
-                <TextBox Name="textBox" Text="{Binding EditorPath}"></TextBox>
+                <TextBox Name="textBoxEditorPath" Text="{Binding EditorPath}"></TextBox>
+            </DockPanel>
+            
+            <DockPanel>
+                <Label DockPanel.Dock="Left" ToolTip="Properties always shown (semi-colon separated)">Common Properties</Label>
+                <TextBox Name="textBoxCommonProperties" Text="{Binding CommonProperties}"></TextBox>
             </DockPanel>
         </StackPanel>
     </DockPanel>

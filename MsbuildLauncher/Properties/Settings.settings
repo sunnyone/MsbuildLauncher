@@ -23,5 +23,8 @@
     <Setting Name="EditorPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">%WINDIR%\notepad.exe</Value>
     </Setting>
+    <Setting Name="CommonProperties" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Configuration;Platform</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

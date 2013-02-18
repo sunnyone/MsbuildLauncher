@@ -36,14 +36,24 @@ namespace MsbuildLauncher.ViewModel
             set { editorPath = value; OnPropertyChanged("EditorPath"); }
         }
 
+        private string commonProperties;
+        public string CommonProperties
+        {
+            get { return commonProperties; }
+            set { commonProperties = value; OnPropertyChanged("CommonProperties"); }
+        }
+
         public void LoadSettings()
         {
             this.EditorPath = Properties.Settings.Default.EditorPath;
+            this.CommonProperties = Properties.Settings.Default.CommonProperties;
         }
 
         public void SaveSettings()
         {
             Properties.Settings.Default.EditorPath = this.EditorPath;
+            Properties.Settings.Default.CommonProperties = this.CommonProperties;
+
             Properties.Settings.Default.Save();
         }
     }

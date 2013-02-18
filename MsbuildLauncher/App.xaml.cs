@@ -40,8 +40,6 @@ namespace MsbuildLauncher {
                 string jsonPath = System.IO.Path.Combine(
                     System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
                     Const.CommonPropertiesFilename);
-
-                this.MainViewModel.CreateCommonProperties(System.IO.File.ReadAllText(jsonPath));
             }
             catch (Exception ex)
             {

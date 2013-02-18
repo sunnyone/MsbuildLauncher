@@ -117,17 +117,29 @@ namespace MsbuildLauncher.ViewModel
 
         private void clearCommonProperties()
         {
-            foreach (var propItem in this.CommonPropertyList)
-            {
-                propItem.DefaultValue = null;
-                propItem.Value = null;
-                propItem.IsChanged = false;
-            }
+            this.CommonPropertyList.Clear();
         }
 
         private void clearFileProperties()
         {
             this.FilePropertyList.Clear();
+        }
+
+
+        private void setPropertyInfoToProperyItem(Microsoft.Build.Evaluation.Project project, Microsoft.Build.Evaluation.ProjectProperty prop, PropertyItem propItem)
+        {
+            propItem.Name = prop.Name;
+            propItem.DefaultValue = prop.UnevaluatedValue;
+            propItem.Value = prop.UnevaluatedValue;
+            propItem.IsChanged = false;
+            propItem.IsEnabled = true;
+
+            var q = project.ConditionedProperties.Where(x => x.Key == prop.Name);
+            if (q.Any())
+            {
+                var condProp = q.First();
+                propItem.Items = new string[] { prop.UnevaluatedValue }.Union(condProp.Value).ToArray();
+            }
         }
 
         private void loadFileProperties(Microsoft.Build.Evaluation.Project project)
@@ -139,18 +151,11 @@ namespace MsbuildLauncher.ViewModel
                     prop.IsReservedProperty)
                     continue;
 
-                var propItem = new PropertyItem();
-                propItem.Name = prop.Name;
-                propItem.DefaultValue = prop.UnevaluatedValue;
-                propItem.Value = prop.UnevaluatedValue;
-                propItem.IsChanged = false;
-                propItem.IsEnabled = true;
+                if (this.CommonPropertyList.Any(x => x.Name == prop.Name))
+                    continue;
 
-                var q = project.ConditionedProperties.Where(x => x.Key == prop.Name);
-                if (q.Any()) {
-                    var condProp = q.First();
-                    propItem.Items = condProp.Value.ToArray();
-                }
+                var propItem = new PropertyItem();
+                setPropertyInfoToProperyItem(project, prop, propItem);
 
                 this.FilePropertyList.Add(propItem);
             }
@@ -158,29 +163,28 @@ namespace MsbuildLauncher.ViewModel
 
         private void loadCommonProperties(Microsoft.Build.Evaluation.Project project)
         {
-            foreach (var propItem in this.CommonPropertyList)
+            string[] targets = Properties.Settings.Default.CommonProperties.Split(new char[] { ';' });
+
+            foreach (var propName in targets)
             {
                 bool isEnabled = false;
 
+                var propItem = new PropertyItem();
+                propItem.Name = propName;
+
                 foreach (var prop in project.Properties)
                 {
-                    if (propItem.Name == prop.Name)
+                    if (propName == prop.Name)
                     {
-                        propItem.Value = prop.UnevaluatedValue;
-                        propItem.DefaultValue = prop.UnevaluatedValue;
-                        propItem.IsChanged = false;
-
-                        var q = project.ConditionedProperties.Where(x => x.Key == prop.Name);
-                        if (q.Any()) {
-                            var condProp = q.First();
-                            propItem.Items = condProp.Value.ToArray();
-                        }
+                        setPropertyInfoToProperyItem(project, prop, propItem);
 
                         isEnabled = true;
                     }
                 }
 
                 propItem.IsEnabled = isEnabled;
+
+                this.CommonPropertyList.Add(propItem);
             }
         }
 
@@ -280,16 +284,6 @@ namespace MsbuildLauncher.ViewModel
             if (SupposeLogOutput != null)
             {
                 SupposeLogOutput(this, new LogOutputEventArgs() {Color = color, Text = text});
-            }
-        }
-
-        public void CreateCommonProperties(string jsonText)
-        {
-            var items = JsonUtil.Parse<PropertyItem[]>(jsonText);
-            this.CommonPropertyList.Clear();
-            foreach (var item in items)
-            {
-                this.CommonPropertyList.Add(item);
             }
         }
     }

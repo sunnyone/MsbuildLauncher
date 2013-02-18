@@ -105,5 +105,17 @@ namespace MsbuildLauncher.Properties {
                 this["EditorPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Configuration;Platform")]
+        public string CommonProperties {
+            get {
+                return ((string)(this["CommonProperties"]));
+            }
+            set {
+                this["CommonProperties"] = value;
+            }
+        }
     }
 }
