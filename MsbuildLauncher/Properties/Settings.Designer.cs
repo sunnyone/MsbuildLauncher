@@ -72,7 +72,7 @@ namespace MsbuildLauncher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        [global::System.Configuration.DefaultSettingValueAttribute("120")]
         public double TargetPaneWidth {
             get {
                 return ((double)(this["TargetPaneWidth"]));
@@ -84,7 +84,7 @@ namespace MsbuildLauncher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        [global::System.Configuration.DefaultSettingValueAttribute("250")]
         public double PropertyPaneWidth {
             get {
                 return ((double)(this["PropertyPaneWidth"]));
