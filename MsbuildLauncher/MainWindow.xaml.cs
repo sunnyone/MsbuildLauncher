@@ -253,10 +253,18 @@ namespace MsbuildLauncher
             string exePath = Properties.Settings.Default.EditorPath;
             exePath = Environment.ExpandEnvironmentVariables(exePath);
 
-            System.Diagnostics.ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = exePath;
-            psi.Arguments = string.Format("\"{0}\"", this.mainViewModel.SelectedXmlPath);
-            System.Diagnostics.Process.Start(psi);
+            try
+            {
+                System.Diagnostics.ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = exePath;
+                psi.Arguments = string.Format("\"{0}\"", this.mainViewModel.SelectedXmlPath);
+                System.Diagnostics.Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                notifyErrorMessage(
+                    string.Format("Failed to execute the editor ({0}): {1}", exePath, ex.Message));
+            }
         }
 
         private void buttonSetting_Click(object sender, RoutedEventArgs e)
