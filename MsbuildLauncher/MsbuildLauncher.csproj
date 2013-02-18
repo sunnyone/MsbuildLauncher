@@ -71,7 +71,6 @@
     <Compile Include="BooleanNotConverter.cs" />
     <Compile Include="BuildContext.cs" />
     <Compile Include="IsNullToVisibilityConverter.cs" />
-    <Compile Include="JsonUtil.cs" />
     <Compile Include="MultiplyConverter.cs" />
     <Compile Include="PropertiesControl.xaml.cs">
       <DependentUpon>PropertiesControl.xaml</DependentUpon>
@@ -129,9 +128,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="CommonProperties.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

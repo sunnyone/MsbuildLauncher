@@ -1,11 +1,5 @@
 <Project DefaultTargets="Build;Install"  
  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-     <!-- MsbuildLauncherProperties = 
-	   [ {"Name": "MyProperty1"},
-	     {"Name": "MyProperty2"},
-	     {"Name": "MyProperty3", "Items": ["Apple", "Orange", "Banana"] }
-	   ]
-	 -->
 
     <PropertyGroup>
         <ProjectName>MsBuildSample</ProjectName>
