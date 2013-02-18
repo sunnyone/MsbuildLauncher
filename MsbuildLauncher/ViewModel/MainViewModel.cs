@@ -130,17 +130,58 @@ namespace MsbuildLauncher.ViewModel
             this.FilePropertyList.Clear();
         }
 
-        private void parseAndCreateFileProperties(string xmlPath)
+        private void loadFileProperties(Microsoft.Build.Evaluation.Project project)
         {
-            string xml = System.IO.File.ReadAllText(xmlPath);
-            //Regex r = new Regex(@"<!-- *MsbuildLauncherProperties *= *(.+?)-->", RegexOptions.Multiline);
-            Regex r = new Regex(@"<!--\s*MsbuildLauncherProperties\s*=(.+?)-->", RegexOptions.Singleline);
-            Match m = r.Match(xml);
-            if (!m.Success)
-                return;
+            foreach (var prop in project.Properties) {
+                if (prop.IsEnvironmentProperty ||
+                    prop.IsGlobalProperty ||
+                    prop.IsImported ||
+                    prop.IsReservedProperty)
+                    continue;
 
-            string jsonText = m.Groups[1].Captures[0].Value;
-            CreateFileProperties(jsonText);
+                var propItem = new PropertyItem();
+                propItem.Name = prop.Name;
+                propItem.DefaultValue = prop.UnevaluatedValue;
+                propItem.Value = prop.UnevaluatedValue;
+                propItem.IsChanged = false;
+                propItem.IsEnabled = true;
+
+                var q = project.ConditionedProperties.Where(x => x.Key == prop.Name);
+                if (q.Any()) {
+                    var condProp = q.First();
+                    propItem.Items = condProp.Value.ToArray();
+                }
+
+                this.FilePropertyList.Add(propItem);
+            }
+        }
+
+        private void loadCommonProperties(Microsoft.Build.Evaluation.Project project)
+        {
+            foreach (var propItem in this.CommonPropertyList)
+            {
+                bool isEnabled = false;
+
+                foreach (var prop in project.Properties)
+                {
+                    if (propItem.Name == prop.Name)
+                    {
+                        propItem.Value = prop.UnevaluatedValue;
+                        propItem.DefaultValue = prop.UnevaluatedValue;
+                        propItem.IsChanged = false;
+
+                        var q = project.ConditionedProperties.Where(x => x.Key == prop.Name);
+                        if (q.Any()) {
+                            var condProp = q.First();
+                            propItem.Items = condProp.Value.ToArray();
+                        }
+
+                        isEnabled = true;
+                    }
+                }
+
+                propItem.IsEnabled = isEnabled;
+            }
         }
 
         public void LoadBuildXml(string xmlPath)
@@ -158,8 +199,6 @@ namespace MsbuildLauncher.ViewModel
 
             try
             {
-                parseAndCreateFileProperties(xmlPath);
-
                 var project = new Microsoft.Build.Evaluation.Project(xmlPath);
                 
                 // load target names
@@ -168,27 +207,9 @@ namespace MsbuildLauncher.ViewModel
                     this.TargetNameList.Add(kvp.Key);
                 }
 
-                // load properties
-                foreach (var propItem in this.CommonPropertyList.Union(this.FilePropertyList))
-                {
-                    bool isEnabled = false;
-
-                    foreach (var prop in project.Properties)
-                    {
-                        if (propItem.Name == prop.Name)
-                        {
-                            propItem.Value = prop.UnevaluatedValue;
-                            propItem.DefaultValue = prop.UnevaluatedValue;
-                            propItem.IsChanged = false;
-
-                            isEnabled = true;
-                        }
-                    }
-
-                    propItem.IsEnabled = isEnabled;
-                }
-
-
+                loadCommonProperties(project);
+                loadFileProperties(project);
+                
                 project.ProjectCollection.UnloadAllProjects();
             }
             catch (Exception ex)
@@ -269,16 +290,6 @@ namespace MsbuildLauncher.ViewModel
             foreach (var item in items)
             {
                 this.CommonPropertyList.Add(item);
-            }
-        }
-
-        public void CreateFileProperties(string jsonText)
-        {
-            var items = JsonUtil.Parse<PropertyItem[]>(jsonText);
-            this.FilePropertyList.Clear();
-            foreach (var item in items)
-            {
-                this.FilePropertyList.Add(item);
             }
         }
     }
