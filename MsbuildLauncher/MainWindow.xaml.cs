@@ -265,5 +265,15 @@ namespace MsbuildLauncher
             window.Owner = this;
             window.ShowDialog();
         }
+
+        const double NameWidthPercent = 0.35;
+        private void stackPanelProperties_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            int nameWidth = (int)(e.NewSize.Width * NameWidthPercent);
+
+            this.propertiesControlCommon.NameWidth = nameWidth;
+            this.propertiesControlFile.NameWidth = nameWidth;
+        }
+
     }
 }

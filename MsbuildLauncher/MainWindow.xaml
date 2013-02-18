@@ -86,13 +86,13 @@
 
             <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Right" Background="{StaticResource NormalBorderBrush}"/>
 
-            <StackPanel Grid.Column="2" Background="{StaticResource WindowBackgroundBrush}">
+            <StackPanel Name="stackPanelProperties" Grid.Column="2" Background="{StaticResource WindowBackgroundBrush}" SizeChanged="stackPanelProperties_SizeChanged">
                 <Expander Name="expanderCommonProperties" Header="Common Properties" IsExpanded="True">
-                    <local:PropertiesControl DataContext="{Binding CommonPropertyList}" />
+                    <local:PropertiesControl x:Name="propertiesControlCommon" DataContext="{Binding CommonPropertyList}" />
                 </Expander>
 
                 <Expander Name="expanderFileProperties" Header="File Properties" IsExpanded="True">
-                    <local:PropertiesControl DataContext="{Binding FilePropertyList}" />
+                    <local:PropertiesControl x:Name="propertiesControlFile" DataContext="{Binding FilePropertyList}" />
                 </Expander>
             </StackPanel>
         </Grid>

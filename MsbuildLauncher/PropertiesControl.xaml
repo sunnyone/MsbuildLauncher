@@ -14,7 +14,7 @@
     <ItemsControl ItemsSource="{Binding}" >
         <ItemsControl.Resources>
             <Style TargetType="Label">
-                <Setter Property="MinWidth" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PropertiesControl}}, Path=NameWidth}" />
+                <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:PropertiesControl}}, Path=NameWidth}" />
                 <Setter Property="HorizontalContentAlignment" Value="Right" />
                 <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             </Style>
