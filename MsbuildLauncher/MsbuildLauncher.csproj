@@ -72,6 +72,7 @@
     <Compile Include="BuildContext.cs" />
     <Compile Include="IsNullToVisibilityConverter.cs" />
     <Compile Include="JsonUtil.cs" />
+    <Compile Include="MultiplyConverter.cs" />
     <Compile Include="PropertiesControl.xaml.cs">
       <DependentUpon>PropertiesControl.xaml</DependentUpon>
     </Compile>

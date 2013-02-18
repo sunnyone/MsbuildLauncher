@@ -9,6 +9,7 @@
     
     <UserControl.Resources>
         <local:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter" />
+        <local:MultiplyConverter x:Key="MultiplyConverter" />
     </UserControl.Resources>
     
     <ItemsControl ItemsSource="{Binding}" >
@@ -34,6 +35,14 @@
             <DataTemplate>
                 <DockPanel IsEnabled="{Binding IsEnabled}">
                     <Label DockPanel.Dock="Left" ToolTip="{Binding Name}">
+                        <Label.FontSize>
+                            <Binding
+                                RelativeSource="{RelativeSource AncestorType={x:Type Window}}"
+                                Path="FontSize"
+                                Converter="{StaticResource MultiplyConverter}"
+                                ConverterParameter="0.95" />
+                        </Label.FontSize>
+                        
                         <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Name}" />
                     </Label>
                     <ToggleButton 
@@ -45,9 +54,25 @@
                         <TextBox 
                             Name="textBoxValue"
                             Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
-                            Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=VisibleIfNull}" />
+                            Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=VisibleIfNull}">
+                            <TextBox.FontSize>
+                                <Binding
+                                   RelativeSource="{RelativeSource AncestorType={x:Type Window}}"
+                                   Path="FontSize"
+                                   Converter="{StaticResource MultiplyConverter}"
+                                   ConverterParameter="0.95" />
+                            </TextBox.FontSize>
+                        </TextBox>
                         <ComboBox SelectedValue="{Binding Value}" ItemsSource="{Binding Items}" IsEditable="True"
-                                 Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=CollapsedIfNull}"/>
+                                 Visibility="{Binding Items, Converter={StaticResource IsNullToVisibilityConverter}, ConverterParameter=CollapsedIfNull}">
+                            <ComboBox.FontSize>
+                                <Binding
+                                   RelativeSource="{RelativeSource AncestorType={x:Type Window}}"
+                                   Path="FontSize"
+                                   Converter="{StaticResource MultiplyConverter}"
+                                   ConverterParameter="0.95" />
+                            </ComboBox.FontSize>
+                        </ComboBox>
                     </StackPanel>
                 </DockPanel>
             </DataTemplate>
