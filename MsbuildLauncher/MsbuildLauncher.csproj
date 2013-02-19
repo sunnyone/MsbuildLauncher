@@ -68,6 +68,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="BooleanNotConverter.cs" />
     <Compile Include="BuildContext.cs" />
     <Compile Include="IsNullToVisibilityConverter.cs" />

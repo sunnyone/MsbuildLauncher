@@ -19,6 +19,26 @@
     <RemoveDir Directories="$(OutputDir)" />
   </Target>
   
+  <Target Name="Version">
+    <Time>
+      <Output TaskParameter="Year" PropertyName="Year" />
+    </Time>
+
+    <Message Text="Version: $(MsbuildLauncherVersion)"/>
+
+    <Attrib Files="$(MSBuildProjectDirectory)\GlobalAssemblyInfo.cs" ReadOnly="False" />
+
+    <AssemblyInfo CodeLanguage="CS"
+                  OutputFile="$(MSBuildProjectDirectory)\GlobalAssemblyInfo.cs"
+                  GenerateClass="true"
+				  AssemblyCompany="http://msbuildlauncher.codeplex.com"
+				  AssemblyProduct="MSBuild Launcher"
+                  AssemblyCopyright="Copyright © Yoichi Imai 2012-$(Year)"
+                  AssemblyVersion="$(MsbuildLauncherVersion).0"
+                  AssemblyFileVersion="$(MsbuildLauncherVersion).0"
+                  AssemblyInformationalVersion="$(MsbuildLauncherVersion).0" />
+  </Target>
+
   <Target Name="Build" DependsOnTargets="Clean">
     <MSBuild Targets="Build" Projects="$(MSBuildProjectDirectory)\MsbuildLauncher\MsbuildLauncher.csproj"
              Properties="Configuration=Release;Platform=x86;OutputPath=$(OutputDir)\MsbuildLauncher" />
@@ -40,23 +60,6 @@
 	     WorkingDirectory="$(OutputDir)"
 	     ZipFileName="$(OutputDir)\MsbuildLauncher-$(MsbuildLauncherVersion).zip" />
   </Target>
-  
-  <Target Name="ReplaceAssemblyInfo">
-	<ItemGroup>
-	  <AssemblyInfoFiles Include="$(MSBuildProjectDirectory)\**\Properties\AssemblyInfo.cs" />
-	</ItemGroup>
-	
-	<AssemblyInfo
-	   CodeLanguage="CS"
-	   OutputFile="%(AssemblyInfoFiles.FullPath)"
-	   AssemblyTitle="MSBuild Launcher"
-	   AssemblyDescription="MSBuild Launcher"
-	   AssemblyCopyright="Copyright (c) 2013 Yoichi Imai"
-	   ComVisible="false"
-	   CLSCompliant="true"
-	   AssemblyVersion="$(MsbuildLauncherVersion).0"
-	   AssemblyFileVersion="$(MsbuildLauncherVersion).0" />
-  </Target>
-  
+
 </Project>
 

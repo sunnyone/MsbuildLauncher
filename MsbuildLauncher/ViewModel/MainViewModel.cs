@@ -93,7 +93,7 @@ namespace MsbuildLauncher.ViewModel
                     filename = System.IO.Path.GetFileName(this.SelectedXmlPath);
                 }
 
-                string appVersion = string.Format("{0} version {1}", Const.ApplicationName, version);
+                string appVersion = string.Format("{0} version {1}", ThisAssembly.AssemblyProduct, version);
 
                 if (filename != null)
                     return string.Format("{0} - {1}", filename, appVersion);
