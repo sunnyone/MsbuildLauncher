@@ -78,8 +78,30 @@ namespace MsbuildLauncher.ViewModel
         public string SelectedXmlPath
         {
             get { return selectedXmlPath; }
-            set { selectedXmlPath = value; OnPropertyChanged("SelectedXmlPath"); }
+            set { selectedXmlPath = value; OnPropertyChanged("SelectedXmlPath"); OnPropertyChanged("WindowTitle"); }
         }
+
+        public string WindowTitle
+        {
+            get
+            {
+                var versionFull = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                string version = string.Format("{0}.{1}.{2}", versionFull.Major, versionFull.Minor, versionFull.Build);
+                string filename = null;
+                if (!string.IsNullOrEmpty(this.SelectedXmlPath))
+                {
+                    filename = System.IO.Path.GetFileName(this.SelectedXmlPath);
+                }
+
+                string appVersion = string.Format("{0} version {1}", Const.ApplicationName, version);
+
+                if (filename != null)
+                    return string.Format("{0} - {1}", filename, appVersion);
+                else
+                    return appVersion;
+            }
+        }
+
 
         // TODO: use action
         public event EventHandler SupposeLogInitialized;
