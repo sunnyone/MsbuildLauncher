@@ -3,6 +3,7 @@
   <PropertyGroup>
 	<MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\.build</MSBuildCommunityTasksPath>
 	<OutputDir>$(MSBuildProjectDirectory)\build</OutputDir>
+	<MsbuildLauncherVersion>0.1.2</MsbuildLauncherVersion>
   </PropertyGroup>
   
   <ItemGroup>
@@ -37,7 +38,25 @@
 	
 	<Zip Files="@(Files)"
 	     WorkingDirectory="$(OutputDir)"
-	     ZipFileName="$(OutputDir)\MsbuildLauncher.zip" />
+	     ZipFileName="$(OutputDir)\MsbuildLauncher-$(MsbuildLauncherVersion).zip" />
   </Target>
+  
+  <Target Name="ReplaceAssemblyInfo">
+	<ItemGroup>
+	  <AssemblyInfoFiles Include="$(MSBuildProjectDirectory)\**\Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+	
+	<AssemblyInfo
+	   CodeLanguage="CS"
+	   OutputFile="%(AssemblyInfoFiles.FullPath)"
+	   AssemblyTitle="MSBuild Launcher"
+	   AssemblyDescription="MSBuild Launcher"
+	   AssemblyCopyright="Copyright (c) 2013 Yoichi Imai"
+	   ComVisible="false"
+	   CLSCompliant="true"
+	   AssemblyVersion="$(MsbuildLauncherVersion).0"
+	   AssemblyFileVersion="$(MsbuildLauncherVersion).0" />
+  </Target>
+  
 </Project>
 
