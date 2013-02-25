@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{470600
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "MsbuildLauncher.Installer", "MsbuildLauncher.Installer\MsbuildLauncher.Installer.wixproj", "{AA623FE2-E840-41B9-B1F9-8CB572B771E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,16 @@ Global
 		{4C0C1CDD-A54F-413F-90C4-26DA9962DEAD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{4C0C1CDD-A54F-413F-90C4-26DA9962DEAD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4C0C1CDD-A54F-413F-90C4-26DA9962DEAD}.Release|x86.ActiveCfg = Release|Any CPU
+		{AA623FE2-E840-41B9-B1F9-8CB572B771E3}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{AA623FE2-E840-41B9-B1F9-8CB572B771E3}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{AA623FE2-E840-41B9-B1F9-8CB572B771E3}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{AA623FE2-E840-41B9-B1F9-8CB572B771E3}.Debug|x86.ActiveCfg = Debug|x86
+		{AA623FE2-E840-41B9-B1F9-8CB572B771E3}.Debug|x86.Build.0 = Debug|x86
+		{AA623FE2-E840-41B9-B1F9-8CB572B771E3}.Release|Any CPU.ActiveCfg = Release|x86
+		{AA623FE2-E840-41B9-B1F9-8CB572B771E3}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{AA623FE2-E840-41B9-B1F9-8CB572B771E3}.Release|Mixed Platforms.Build.0 = Release|x86
+		{AA623FE2-E840-41B9-B1F9-8CB572B771E3}.Release|x86.ActiveCfg = Release|x86
+		{AA623FE2-E840-41B9-B1F9-8CB572B771E3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

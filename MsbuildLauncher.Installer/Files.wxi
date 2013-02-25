@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="MsbuildLauncher.Agent.exe" Guid="F9E9AC23-2651-408E-8475-3E4824E7E03A">
+        <File Id="MsbuildLauncher.Agent.exe" KeyPath="yes" Source="$(var.MsbuildLauncher.Agent.TargetDir)\MsbuildLauncher.Agent.exe" />
+      </Component>
+      <Component Id="MsbuildLauncher.Agent.exe.config" Guid="CF0329F1-56EB-4F3C-B292-E32B87FAF73C">
+        <File Id="MsbuildLauncher.Agent.exe.config" KeyPath="yes" Source="$(var.MsbuildLauncher.Agent.TargetDir)\MsbuildLauncher.Agent.exe.config" />
+      </Component>
+      
+      <Component Id="LICENSE_ExpressionDark_Theme.txt" Guid="5F163E77-375F-49AC-A53E-804F20367978">
+        <File Id="LICENSE_ExpressionDark_Theme.txt" KeyPath="yes" Source="$(var.MsbuildLauncher.TargetDir)\LICENSE-ExpressionDark-Theme.txt" />
+      </Component>
+      <Component Id="LICENSE.txt" Guid="CCC1730B-AD6E-4699-B409-14E18B257293">
+        <File Id="LICENSE.txt" KeyPath="yes" Source="$(var.MsbuildLauncher.TargetDir)\LICENSE.txt" />
+      </Component>
+      <Component Id="MsbuildLauncher.Common.dll" Guid="043A9653-229C-4797-8861-DEDFF4628081">
+        <File Id="MsbuildLauncher.Common.dll" KeyPath="yes" Source="$(var.MsbuildLauncher.TargetDir)\MsbuildLauncher.Common.dll" />
+      </Component>
+      <Component Id="MsbuildLauncher.exe" Guid="6E1FB676-0EF5-49D2-A078-3348593F7134">
+        <File Id="MsbuildLauncher.exe" KeyPath="yes" Source="$(var.MsbuildLauncher.TargetDir)\MsbuildLauncher.exe" />
+      </Component>
+      <Component Id="MsbuildLauncher.exe.config" Guid="AE2024C0-6C6E-4A14-9B68-14CDBE4B7C97">
+        <File Id="MsbuildLauncher.exe.config" KeyPath="yes" Source="$(var.MsbuildLauncher.TargetDir)\MsbuildLauncher.exe.config" />
+      </Component>
+      <Component Id="NEWS.txt" Guid="070C6BAE-90E7-4F68-B481-AEFAE60D03D2">
+        <File Id="NEWS.txt" KeyPath="yes" Source="$(var.MsbuildLauncher.TargetDir)\NEWS.txt" />
+      </Component>
+      <Component Id="README.txt" Guid="B12ECC82-F7DF-42E4-B93D-842F39366F2B">
+        <File Id="README.txt" KeyPath="yes" Source="$(var.MsbuildLauncher.TargetDir)\README.txt" />
+      </Component>
+      <Component Id="sample.msbuild" Guid="9615FE7B-5ED7-4D4D-97A1-B70FB1231B44">
+        <File Id="sample.msbuild" KeyPath="yes" Source="$(var.MsbuildLauncher.TargetDir)\sample.msbuild" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+  <Fragment>
+    <ComponentGroup Id="ProductComponents">
+      <ComponentRef Id="MsbuildLauncher.Agent.exe" />
+      <ComponentRef Id="MsbuildLauncher.Agent.exe.config" />
+      <ComponentRef Id="MsbuildLauncher.Common.dll" />
+      <ComponentRef Id="MsbuildLauncher.exe" />
+      <ComponentRef Id="MsbuildLauncher.exe.config" />
+      <ComponentRef Id="LICENSE_ExpressionDark_Theme.txt" />
+      <ComponentRef Id="LICENSE.txt" />
+      <ComponentRef Id="NEWS.txt" />
+      <ComponentRef Id="README.txt" />
+      <ComponentRef Id="sample.msbuild" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>
