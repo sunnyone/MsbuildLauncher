@@ -22,8 +22,7 @@
     <CompilerAdditionalOptions>-ext WixUtilExtension -ext WixUIExtension</CompilerAdditionalOptions>
     <LinkerAdditionalOptions>-ext WixUtilExtension -ext WixUIExtension</LinkerAdditionalOptions>
     <SuppressValidation>False</SuppressValidation>
-    <SuppressIces>
-    </SuppressIces>
+    <SuppressIces>ICE69</SuppressIces>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Product.wxs" />
@@ -50,7 +49,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssociateDialog.wxi" />
     <Content Include="LICENSE.rtf" />
+    <Compile Include="UI.wxi" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--

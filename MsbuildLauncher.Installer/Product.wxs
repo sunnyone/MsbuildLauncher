@@ -9,12 +9,18 @@
 		<Feature Id="ProductFeature" Title="MsbuildLauncher" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
       <ComponentRef Id="StartMenuShortcuts" />
+    </Feature>
+
+    <Feature Id="AssociateExtensionMsbuildFeature" Level="2">
       <ComponentRef Id="AssociateExtensionMsbuild" />
+    </Feature>
+
+    <Feature Id="AssociateExtensionProjFeature" Level="3">
       <ComponentRef Id="AssociateExtensionProj" />
-		</Feature>
+    </Feature>
 
     <!-- ui -->
-    <UIRef Id="WixUI_InstallDir" />
+    <UIRef Id="WixUI_MyInstallDir" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
     <WixVariable Id="WixUILicenseRtf" Value="LICENSE.rtf"/>
   </Product>
@@ -58,23 +64,24 @@
   <!-- extension -->
   <Fragment>
     <DirectoryRef Id="TARGETDIR">
+      <Component Id="AssociateExtensionProj" Guid="6893FFB4-04F0-4449-9014-474F398838E8">
+        <ProgId Id="MSBuildLauncher.Document.Proj" Description="MSBuild Project File (proj)" Icon="MsbuildLauncher.Agent.exe">
+          <Extension Id="proj" ContentType="application/msbuild-project-proj">
+            <!-- MsbuildLauncher.exe is fileid -->
+            <Verb Id="open" Command="Open" TargetFile="MsbuildLauncher.Agent.exe" Argument='"%1"' />
+          </Extension>
+        </ProgId>
+      </Component>
+      
       <Component Id="AssociateExtensionMsbuild" Guid="5BD7C774-5905-4112-9099-40F50B00A50E">
-        <ProgId Id="MSBuildLauncher.Document.MSBuild" Description="MSBuild Project File" Icon="MsbuildLauncher.exe">
-          <Extension Id="msbuild" ContentType="application/msbuild-project">
+        <ProgId Id="MSBuildLauncher.Document.MSBuild" Description="MSBuild Project File (msbuild)" Icon="MsbuildLauncher.exe">
+          <Extension Id="msbuild" ContentType="application/msbuild-project-msbuild">
             <!-- MsbuildLauncher.exe is fileid -->
             <Verb Id="open" Command="Open" TargetFile="MsbuildLauncher.exe" Argument='"%1"' />
           </Extension>
         </ProgId>
       </Component>
 
-      <Component Id="AssociateExtensionProj" Guid="6893FFB4-04F0-4449-9014-474F398838E8">
-        <ProgId Id="MSBuildLauncher.Document.MSBuild" Description="MSBuild Project File" Icon="MsbuildLauncher.exe">
-          <Extension Id="proj" ContentType="application/msbuild-project">
-            <!-- MsbuildLauncher.exe is fileid -->
-            <Verb Id="open" Command="Open" TargetFile="MsbuildLauncher.exe" Argument='"%1"' />
-          </Extension>
-        </ProgId>
-      </Component>
     </DirectoryRef>
   </Fragment>
   
