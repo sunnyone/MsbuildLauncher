@@ -9,6 +9,8 @@
 		<Feature Id="ProductFeature" Title="MsbuildLauncher" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
       <ComponentRef Id="StartMenuShortcuts" />
+      <ComponentRef Id="AssociateExtensionMsbuild" />
+      <ComponentRef Id="AssociateExtensionProj" />
 		</Feature>
 	</Product>
 
@@ -48,4 +50,27 @@
     </DirectoryRef>
   </Fragment>
 
+  <!-- extension -->
+  <Fragment>
+    <DirectoryRef Id="TARGETDIR">
+      <Component Id="AssociateExtensionMsbuild" Guid="5BD7C774-5905-4112-9099-40F50B00A50E">
+        <ProgId Id="MSBuildLauncher.Document.MSBuild" Description="MSBuild Project File" Icon="MsbuildLauncher.exe">
+          <Extension Id="msbuild" ContentType="application/msbuild-project">
+            <!-- MsbuildLauncher.exe is fileid -->
+            <Verb Id="open" Command="Open" TargetFile="MsbuildLauncher.exe" Argument='"%1"' />
+          </Extension>
+        </ProgId>
+      </Component>
+
+      <Component Id="AssociateExtensionProj" Guid="6893FFB4-04F0-4449-9014-474F398838E8">
+        <ProgId Id="MSBuildLauncher.Document.MSBuild" Description="MSBuild Project File" Icon="MsbuildLauncher.exe">
+          <Extension Id="proj" ContentType="application/msbuild-project">
+            <!-- MsbuildLauncher.exe is fileid -->
+            <Verb Id="open" Command="Open" TargetFile="MsbuildLauncher.exe" Argument='"%1"' />
+          </Extension>
+        </ProgId>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+  
 </Wix>
