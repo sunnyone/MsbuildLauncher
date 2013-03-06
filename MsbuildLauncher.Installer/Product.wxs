@@ -12,7 +12,12 @@
       <ComponentRef Id="AssociateExtensionMsbuild" />
       <ComponentRef Id="AssociateExtensionProj" />
 		</Feature>
-	</Product>
+
+    <!-- ui -->
+    <UIRef Id="WixUI_InstallDir" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <WixVariable Id="WixUILicenseRtf" Value="LICENSE.rtf"/>
+  </Product>
 
   <!-- top dir -->
   <Fragment>
