@@ -49,7 +49,7 @@ namespace MsbuildLauncher.Agent {
 
             foreach (var prop in propertyList)
             {
-                proj.SetProperty(prop.Key, prop.Value);
+                proj.SetGlobalProperty(prop.Key, prop.Value);
             }
 
             if (string.IsNullOrEmpty(targetName))
