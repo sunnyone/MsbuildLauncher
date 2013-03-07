@@ -1,35 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-	<Product Id="*" Name="MSBuild Launcher" Language="1033" Version="0.1.2.0" Manufacturer="MSBuild Launcher" UpgradeCode="9d2da0dd-28e8-4b39-a0cb-78d846c60a90">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowSameVersionUpgrades="yes" />
-		<MediaTemplate EmbedCab="yes" />
-
-		<Feature Id="ProductFeature" Title="MsbuildLauncher" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
+  <Product Id="*" Name="MSBuild Launcher" Language="1033" Version="0.1.2.0" Manufacturer="MSBuild Launcher" UpgradeCode="9d2da0dd-28e8-4b39-a0cb-78d846c60a90">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowSameVersionUpgrades="yes" />
+    <MediaTemplate EmbedCab="yes" />
+    <Feature Id="ProductFeature" Title="MsbuildLauncher" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
       <ComponentRef Id="StartMenuShortcuts" />
     </Feature>
-
     <Feature Id="AssociateExtensionMsbuildFeature" Level="2">
       <ComponentRef Id="AssociateExtensionMsbuild" />
     </Feature>
-
     <Feature Id="AssociateExtensionProjFeature" Level="3">
       <ComponentRef Id="AssociateExtensionProj" />
     </Feature>
-
     <!-- ui -->
     <UIRef Id="WixUI_MyInstallDir" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
-    <WixVariable Id="WixUILicenseRtf" Value="LICENSE.rtf"/>
+    <WixVariable Id="WixUILicenseRtf" Value="LICENSE.rtf" />
   </Product>
-
   <!-- top dir -->
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir" />
   </Fragment>
-  
   <!-- program files -->
   <Fragment>
     <DirectoryRef Id="TARGETDIR">
@@ -39,7 +32,6 @@
       </Directory>
     </DirectoryRef>
   </Fragment>
-
   <!-- program menu -->
   <Fragment>
     <DirectoryRef Id="TARGETDIR">
@@ -48,11 +40,7 @@
           <Component Id="StartMenuShortcuts" Guid="190BA942-8419-4411-AC78-2C94A6919595">
             <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
             <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
-
-            <Shortcut Id="ExecuteProduct" Name="MSBuild Launcher"
-                      Target="[INSTALLFOLDER]MsbuildLauncher.exe"
-                      WorkingDirectory="INSTALLFOLDER" />
-
+            <Shortcut Id="ExecuteProduct" Name="MSBuild Launcher" Target="[INSTALLFOLDER]MsbuildLauncher.exe" WorkingDirectory="INSTALLFOLDER" />
             <Shortcut Id="UninstallProduct" Name="Uninstall" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
             <util:InternetShortcut Id="WebsiteShortcut" Name="MSBuild Launcher Web" Target="http://msbuildlauncher.codeplex.com/" />
           </Component>
@@ -60,7 +48,6 @@
       </Directory>
     </DirectoryRef>
   </Fragment>
-
   <!-- extension -->
   <Fragment>
     <DirectoryRef Id="TARGETDIR">
@@ -68,21 +55,18 @@
         <ProgId Id="MSBuildLauncher.Document.Proj" Description="MSBuild Project File" Icon="MsbuildLauncher.exe">
           <Extension Id="proj" ContentType="application/msbuild-project-proj">
             <!-- MsbuildLauncher.exe is fileid -->
-            <Verb Id="open" Command="Open" TargetFile="MsbuildLauncher.exe" Argument='"%1"' />
+            <Verb Id="open" Command="Open" TargetFile="MsbuildLauncher.exe" Argument="&quot;%1&quot;" />
           </Extension>
         </ProgId>
       </Component>
-      
       <Component Id="AssociateExtensionMsbuild" Guid="5BD7C774-5905-4112-9099-40F50B00A50E">
         <ProgId Id="MSBuildLauncher.Document.MSBuild" Description="MSBuild Project File" Icon="MsbuildLauncher.exe">
           <Extension Id="msbuild" ContentType="application/msbuild-project-msbuild">
             <!-- MsbuildLauncher.exe is fileid -->
-            <Verb Id="open" Command="Open" TargetFile="MsbuildLauncher.exe" Argument='"%1"' />
+            <Verb Id="open" Command="Open" TargetFile="MsbuildLauncher.exe" Argument="&quot;%1&quot;" />
           </Extension>
         </ProgId>
       </Component>
-
     </DirectoryRef>
   </Fragment>
-  
 </Wix>

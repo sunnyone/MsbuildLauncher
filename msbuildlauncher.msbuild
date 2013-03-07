@@ -37,6 +37,13 @@
                   AssemblyVersion="$(MsbuildLauncherVersion).0"
                   AssemblyFileVersion="$(MsbuildLauncherVersion).0"
                   AssemblyInformationalVersion="$(MsbuildLauncherVersion).0" />
+	
+	<XmlUpdate
+	  XmlFilename="$(MSBuildProjectDirectory)\MsbuildLauncher.Installer\Product.wxs"
+	  XPath="//w:Wix/w:Product/@Version"
+	  Value="$(MsbuildLauncherVersion).0"
+	  Prefix="w"
+	  Namespace="http://schemas.microsoft.com/wix/2006/wi" />
   </Target>
 
   <Target Name="Build" DependsOnTargets="Clean">
@@ -51,6 +58,8 @@
 	<Copy SourceFiles="@(DocFiles)" DestinationFolder="$(OutputDir)\MsbuildLauncher" />
   </Target>
   
+  <Target Name="Package" DependsOnTargets="Clean;Archive;Installer" />
+  
   <Target Name="Archive" DependsOnTargets="Build">
     <ItemGroup>
       <Files Include="$(OutputDir)\MsbuildLauncher\**\*" />
@@ -61,5 +70,12 @@
 	     ZipFileName="$(OutputDir)\MsbuildLauncher-$(MsbuildLauncherVersion).zip" />
   </Target>
 
+  <Target Name="Installer" DependsOnTargets="Build">
+    <MSBuild Targets="Build" Projects="$(MSBuildProjectDirectory)\MsbuildLauncher.Installer\MsbuildLauncher.Installer.wixproj"
+             Properties="Configuration=Release;Platform=x86;OutputPath=$(OutputDir)\Installer" />
+	
+	<Copy SourceFiles="$(OutputDir)\Installer\MsbuildLauncher.msi"
+	      DestinationFiles="$(OutputDir)\MsbuildLauncher-$(MsbuildLauncherVersion).msi" />
+  </Target>
 </Project>
 
