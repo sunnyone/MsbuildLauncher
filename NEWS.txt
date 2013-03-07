@@ -1,6 +1,13 @@
 NEWS
 =====
 
+2013-03-07  Version 0.2.0
+---------------------------
+* Read the list of properties from a msbuild file.
+** Deleted the feature to read the embeded JSON.
+* Add the installer.
+* Show the version to window title.
+
 2013-02-09  Version 0.1.2
 ---------------------------
 * Build the exe for x86 instead of AnyCPU to load x86 assemblies.
