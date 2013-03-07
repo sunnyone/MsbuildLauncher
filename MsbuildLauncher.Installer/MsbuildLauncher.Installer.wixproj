@@ -19,8 +19,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <CompilerAdditionalOptions>-ext WixUtilExtension -ext WixUIExtension</CompilerAdditionalOptions>
-    <LinkerAdditionalOptions>-ext WixUtilExtension -ext WixUIExtension</LinkerAdditionalOptions>
+    <CompilerAdditionalOptions>-ext WixUtilExtension -ext WixUIExtension -ext WiXNetFxExtension</CompilerAdditionalOptions>
+    <LinkerAdditionalOptions>-ext WixUtilExtension -ext WixUIExtension  -ext WiXNetFxExtension</LinkerAdditionalOptions>
     <SuppressValidation>False</SuppressValidation>
     <SuppressIces>ICE69</SuppressIces>
   </PropertyGroup>
