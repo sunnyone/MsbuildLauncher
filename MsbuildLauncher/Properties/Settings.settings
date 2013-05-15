@@ -26,5 +26,11 @@
     <Setting Name="CommonProperties" Type="System.String" Scope="User">
       <Value Profile="(Default)">Configuration;Platform</Value>
     </Setting>
+    <Setting Name="FontName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FontSize" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

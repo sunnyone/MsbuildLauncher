@@ -29,6 +29,15 @@
                 <Label DockPanel.Dock="Left" ToolTip="Properties always shown (semi-colon separated)">Common Properties</Label>
                 <TextBox Name="textBoxCommonProperties" Text="{Binding CommonProperties}"></TextBox>
             </DockPanel>
+            
+            <DockPanel>
+                <Label DockPanel.Dock="Left">Font</Label>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <TextBox Width="30" Text="{Binding FontSize}" />
+                    <TextBlock Foreground="{StaticResource TextBrush}" Margin="4">pt</TextBlock>
+                </StackPanel>
+                <ComboBox ItemsSource="{Binding FontNameList}" SelectedValue="{Binding FontName}" />                
+            </DockPanel>
         </StackPanel>
     </DockPanel>
 </Window>

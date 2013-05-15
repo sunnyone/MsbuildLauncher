@@ -29,6 +29,15 @@ namespace MsbuildLauncher.ViewModel
 {
     class SettingViewModel : ViewModelBase
     {
+        public List<string> FontNameList { get; set; }
+
+        public SettingViewModel()
+        {
+            var ifc = new System.Drawing.Text.InstalledFontCollection();
+
+            FontNameList = ifc.Families.Select(x => x.Name).ToList();
+        }
+
         private string editorPath;
         public string EditorPath
         {
@@ -43,16 +52,34 @@ namespace MsbuildLauncher.ViewModel
             set { commonProperties = value; OnPropertyChanged("CommonProperties"); }
         }
 
+        private string fontName;
+        public string FontName
+        {
+            get { return fontName; }
+            set { fontName = value; OnPropertyChanged("FontName"); }
+        }
+
+        private string fontSize;
+        public string FontSize
+        {
+            get { return fontSize; }
+            set { fontSize = value; OnPropertyChanged("FontSize"); }
+        }
+
         public void LoadSettings()
         {
             this.EditorPath = Properties.Settings.Default.EditorPath;
             this.CommonProperties = Properties.Settings.Default.CommonProperties;
+            this.FontName = Properties.Settings.Default.FontName;
+            this.FontSize = Properties.Settings.Default.FontSize;
         }
 
         public void SaveSettings()
         {
             Properties.Settings.Default.EditorPath = this.EditorPath;
             Properties.Settings.Default.CommonProperties = this.CommonProperties;
+            Properties.Settings.Default.FontName = this.FontName;
+            Properties.Settings.Default.FontSize = this.FontSize;
 
             Properties.Settings.Default.Save();
         }
