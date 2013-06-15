@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -80,6 +81,9 @@ namespace MsbuildLauncher.ViewModel
             get { return selectedXmlPath; }
             set { selectedXmlPath = value; OnPropertyChanged("SelectedXmlPath"); OnPropertyChanged("WindowTitle"); }
         }
+        
+        [DllImport("shell32.dll")]
+        public static extern bool IsUserAnAdmin();
 
         public string WindowTitle
         {
@@ -93,7 +97,9 @@ namespace MsbuildLauncher.ViewModel
                     filename = System.IO.Path.GetFileName(this.SelectedXmlPath);
                 }
 
-                string appVersion = string.Format("{0} version {1}", ThisAssembly.AssemblyProduct, version);
+
+                string isAdminString = IsUserAnAdmin() ? " (Administrator)" : "";
+                string appVersion = string.Format("{0} version {1}{2}", ThisAssembly.AssemblyProduct, version, isAdminString);
 
                 if (filename != null)
                     return string.Format("{0} - {1}", filename, appVersion);
