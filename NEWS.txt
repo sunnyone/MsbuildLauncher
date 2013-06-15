@@ -1,6 +1,11 @@
 NEWS
 =====
 
+2013-06-15  Version 0.2.1
+---------------------------
+* The font name/size configuration.
+* Created "Admin" button to execute the msbuild launcher with administrator privilege.
+
 2013-03-07  Version 0.2.0
 ---------------------------
 * Read the list of properties from a msbuild file.

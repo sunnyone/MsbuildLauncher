@@ -3,7 +3,7 @@
   <PropertyGroup>
 	<MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\.build</MSBuildCommunityTasksPath>
 	<OutputDir>$(MSBuildProjectDirectory)\build</OutputDir>
-	<MsbuildLauncherVersion>0.2.0</MsbuildLauncherVersion>
+	<MsbuildLauncherVersion>0.2.1</MsbuildLauncherVersion>
   </PropertyGroup>
   
   <ItemGroup>
