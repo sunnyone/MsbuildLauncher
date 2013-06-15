@@ -37,7 +37,12 @@
                     <Button Name="buttonCancel" Click="buttonCancel_Click" IsEnabled="{Binding IsBuildInProgress}">Cancel</Button>
                     
                     <Separator />
-                    
+                    <Button Name="buttonAdmin"
+                            ToolTip="Run MSBuild Launcher with the administrator privilledge"
+                            Click="ButtonAdmin_Click"
+                            IsEnabled="{Binding IsAdmin, Converter={StaticResource BooleanNotConverter}}">Admin</Button>
+
+                    <Separator />
                     <Button Name="buttonSetting" Click="buttonSetting_Click" Content="Settings" />
                 </StackPanel>
 

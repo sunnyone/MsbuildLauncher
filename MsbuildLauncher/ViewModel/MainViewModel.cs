@@ -108,6 +108,11 @@ namespace MsbuildLauncher.ViewModel
             }
         }
 
+        public bool IsAdmin
+        {
+            get { return IsUserAnAdmin(); }
+        }
+
         private string fontName;
         public string FontName
         {

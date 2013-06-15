@@ -303,5 +303,28 @@ namespace MsbuildLauncher
             this.propertiesControlFile.NameWidth = nameWidth;
         }
 
+        private void ButtonAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo();
+                psi.FileName = Environment.GetCommandLineArgs()[0];
+
+                if (!string.IsNullOrEmpty(this.mainViewModel.SelectedXmlPath))
+                {
+                    psi.Arguments = string.Format("\"{0}\"", this.mainViewModel.SelectedXmlPath);
+                }
+                psi.Verb = "runas";
+                System.Diagnostics.Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                notifyErrorMessage(string.Format("Failed to re-run this program: {0}", ex.ToString()));
+                return;
+            }
+
+            var currentProcess = System.Diagnostics.Process.GetCurrentProcess();
+            currentProcess.Kill();
+        }
     }
 }
