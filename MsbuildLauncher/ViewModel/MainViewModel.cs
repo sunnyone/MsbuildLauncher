@@ -102,6 +102,19 @@ namespace MsbuildLauncher.ViewModel
             }
         }
 
+        private string fontName;
+        public string FontName
+        {
+            get { return fontName == null ? SystemFonts.MessageFontFamily.ToString() : fontName; }
+            set { fontName = value; OnPropertyChanged("FontName"); }
+        }
+
+        private string fontSize;
+        public string FontSize
+        {
+            get { return fontSize == null ? SystemFonts.MessageFontSize.ToString() : fontSize; }
+            set { fontSize = value; OnPropertyChanged("FontSize"); }
+        }
 
         // TODO: use action
         public event EventHandler SupposeLogInitialized;

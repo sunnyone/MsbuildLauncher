@@ -22,6 +22,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -79,13 +80,26 @@ namespace MsbuildLauncher
             }
         }
 
+        private void loadFontConfig()
+        {
+            this.mainViewModel.FontName = string.IsNullOrWhiteSpace(Properties.Settings.Default.FontName)
+                                              ? null
+                                              : Properties.Settings.Default.FontName;
+
+            double d;
+            string fontSize = Properties.Settings.Default.FontSize ?? "";
+            this.mainViewModel.FontSize = Double.TryParse(fontSize, out d)
+                                              ? (new FontSizeConverter().ConvertFrom(fontSize + "pt")).ToString()
+                                              : null;
+        }
+
         private void saveConfig()
         {
             Properties.Settings.Default.WindowWidth = this.ActualWidth;
             Properties.Settings.Default.WindowHeight = this.ActualHeight;
             Properties.Settings.Default.TargetPaneWidth = this.columnDefinitionTarget.ActualWidth;
             Properties.Settings.Default.PropertyPaneWidth = this.columnDefinitionProperty.ActualWidth;
-
+            
             StringCollection col = new StringCollection();
             foreach (object item in this.comboBoxFilePath.Items)
             {
@@ -151,13 +165,19 @@ namespace MsbuildLauncher
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             loadConfig();
-
+            loadFontConfig();
+            Properties.Settings.Default.PropertyChanged += (s1, e1) =>
+                {
+                    loadFontConfig();
+                };
+            
             string filenameAtArgs = ((App)Application.Current).FilenameAtArgs;
             if (filenameAtArgs != null)
             {
                 loadBuildXmlWithSelectionChangedDisabled(filenameAtArgs);
             }
         }
+
 
         private void Window_Closed(object sender, EventArgs e)
         {

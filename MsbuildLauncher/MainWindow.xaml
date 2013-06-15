@@ -81,7 +81,7 @@
 
             <GridSplitter Grid.Column="0" Width="2" HorizontalAlignment="Right" Background="{StaticResource NormalBorderBrush}"/>
 
-            <RichTextBox Name="richTextBoxLog" VerticalScrollBarVisibility="Visible" IsReadOnly="True" Grid.Column="1">
+            <RichTextBox Name="richTextBoxLog" VerticalScrollBarVisibility="Visible" IsReadOnly="True" Grid.Column="1" FontSize="{Binding FontSize}" FontFamily="{Binding FontName}">
             </RichTextBox>
 
             <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Right" Background="{StaticResource NormalBorderBrush}"/>
