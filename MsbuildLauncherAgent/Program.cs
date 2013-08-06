@@ -22,48 +22,39 @@
  */
 using System;
 using System.ServiceModel;
-using Microsoft.Build.Framework;
 using MsbuildLauncher.Common;
+using MsbuildLauncher.Common.Driver;
 
 namespace MsbuildLauncher.Agent {
+    class DriverFeedback : IDriverBuildFeedback
+    {
+        private IMsbuildLauncherApi launcherApi;
+        public DriverFeedback(IMsbuildLauncherApi launcherApi)
+        {
+            this.launcherApi = launcherApi;
+        }
+
+        public void WriteLog(string text, ConsoleColor color)
+        {
+            launcherApi.WriteLog(text, color.ToString());
+        }
+    }
+
     class Program {
-        // FIXME: duplicated
-        const ConsoleColor defaultConsoleColor = ConsoleColor.White;
+        static void Build(IMsbuildLauncherApi launcherApi)
+        {
+            var driverFeedback = new DriverFeedback(launcherApi);
 
-        static void Build(IMsbuildLauncherApi launcherApi) {
-            ConsoleColor lastColor = ConsoleColor.White;
-
-            string xmlPath = launcherApi.GetXmlPath();
+            string filePath = launcherApi.GetXmlPath();
             string targetName = launcherApi.GetTargetName();
             var propertyList = launcherApi.GetProperties();
 
-            var proj = new Microsoft.Build.Evaluation.Project(xmlPath);
-            var consoleLogger = new Microsoft.Build.Logging.ConsoleLogger(LoggerVerbosity.Normal,
-                (text) => {
-                    launcherApi.WriteLog(text, lastColor.ToString());
-                },
-                (c) => { lastColor = c; }, // set color
-                () => { lastColor = defaultConsoleColor; }); // reset color
-
-            ILogger[] loggers = new ILogger[] { consoleLogger };
-
-            foreach (var prop in propertyList)
+            using (var driver = new MSBuildDriver())
             {
-                proj.SetGlobalProperty(prop.Key, prop.Value);
+                driver.Open(filePath);
+                driver.Build(targetName, propertyList.ToArray(), driverFeedback);
             }
-
-            if (string.IsNullOrEmpty(targetName))
-            {
-                proj.Build(loggers);
-            }
-            else
-            {
-                proj.Build(targetName, loggers);
-            }
-
-            proj.ProjectCollection.UnloadAllProjects();
         }
-
 
         static void Main(string[] args) {
             if (args.Length != 1) {

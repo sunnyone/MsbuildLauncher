@@ -31,6 +31,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using System.Text.RegularExpressions;
+using MsbuildLauncher.Common;
+using MsbuildLauncher.Common.Driver;
 
 namespace MsbuildLauncher.ViewModel
 {
@@ -171,69 +173,6 @@ namespace MsbuildLauncher.ViewModel
             this.FilePropertyList.Clear();
         }
 
-
-        private void setPropertyInfoToProperyItem(Microsoft.Build.Evaluation.Project project, Microsoft.Build.Evaluation.ProjectProperty prop, PropertyItem propItem)
-        {
-            propItem.Name = prop.Name;
-            propItem.DefaultValue = prop.UnevaluatedValue;
-            propItem.Value = prop.UnevaluatedValue;
-            propItem.IsChanged = false;
-            propItem.IsEnabled = true;
-
-            var q = project.ConditionedProperties.Where(x => x.Key == prop.Name);
-            if (q.Any())
-            {
-                var condProp = q.First();
-                propItem.Items = new string[] { prop.UnevaluatedValue }.Union(condProp.Value).ToArray();
-            }
-        }
-
-        private void loadFileProperties(Microsoft.Build.Evaluation.Project project)
-        {
-            foreach (var prop in project.Properties) {
-                if (prop.IsEnvironmentProperty ||
-                    prop.IsGlobalProperty ||
-                    prop.IsImported ||
-                    prop.IsReservedProperty)
-                    continue;
-
-                if (this.CommonPropertyList.Any(x => x.Name == prop.Name))
-                    continue;
-
-                var propItem = new PropertyItem();
-                setPropertyInfoToProperyItem(project, prop, propItem);
-
-                this.FilePropertyList.Add(propItem);
-            }
-        }
-
-        private void loadCommonProperties(Microsoft.Build.Evaluation.Project project)
-        {
-            string[] targets = Properties.Settings.Default.CommonProperties.Split(new char[] { ';' });
-
-            foreach (var propName in targets)
-            {
-                bool isEnabled = false;
-
-                var propItem = new PropertyItem();
-                propItem.Name = propName;
-
-                foreach (var prop in project.Properties)
-                {
-                    if (propName == prop.Name)
-                    {
-                        setPropertyInfoToProperyItem(project, prop, propItem);
-
-                        isEnabled = true;
-                    }
-                }
-
-                propItem.IsEnabled = isEnabled;
-
-                this.CommonPropertyList.Add(propItem);
-            }
-        }
-
         public void LoadBuildXml(string xmlPath)
         {
             if (SupposeLogInitialized != null)
@@ -249,18 +188,26 @@ namespace MsbuildLauncher.ViewModel
 
             try
             {
-                var project = new Microsoft.Build.Evaluation.Project(xmlPath);
-                
-                // load target names
-                foreach (var kvp in project.Targets)
+                using (var driver = new MSBuildDriver())
                 {
-                    this.TargetNameList.Add(kvp.Key);
-                }
+                    driver.Open(xmlPath);
 
-                loadCommonProperties(project);
-                loadFileProperties(project);
-                
-                project.ProjectCollection.UnloadAllProjects();
+                    foreach (var targetName in driver.GetTargetNames())
+                    {
+                        this.TargetNameList.Add(targetName);
+                    }
+
+                    PropertyItem[] commonProperties, fileProperties;
+                    
+                    string[] commonPropertyNames = Properties.Settings.Default.CommonProperties.Split(new char[] { ';' });
+                    driver.GetProperties(commonPropertyNames, out commonProperties, out fileProperties);
+
+                    foreach (var propItem in commonProperties)
+                        this.CommonPropertyList.Add(propItem);
+
+                    foreach (var propItem in fileProperties)
+                        this.FilePropertyList.Add(propItem);
+                }
             }
             catch (Exception ex)
             {
