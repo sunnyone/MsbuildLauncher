@@ -49,7 +49,7 @@ namespace MsbuildLauncher.Agent {
             string targetName = launcherApi.GetTargetName();
             var propertyList = launcherApi.GetProperties();
 
-            using (var driver = new MSBuildDriver())
+            using (var driver = DriverDispatcher.CreateDriverByFilename(filePath))
             {
                 driver.Open(filePath);
                 driver.Build(targetName, propertyList.ToArray(), driverFeedback);

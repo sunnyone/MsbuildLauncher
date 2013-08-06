@@ -51,6 +51,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Driver\DriverDispatcher.cs" />
     <Compile Include="Driver\IDriver.cs" />
     <Compile Include="Driver\IDriverBuildFeedback.cs" />
     <Compile Include="Driver\MSBuildDriver.cs" />

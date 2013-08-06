@@ -188,7 +188,7 @@ namespace MsbuildLauncher.ViewModel
 
             try
             {
-                using (var driver = new MSBuildDriver())
+                using (var driver = DriverDispatcher.CreateDriverByFilename(xmlPath))
                 {
                     driver.Open(xmlPath);
 
