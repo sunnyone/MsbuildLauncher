@@ -63,7 +63,7 @@
             <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" 
                           Background="{StaticResource ControlBackgroundBrush}">
                 <Expander Header="Targets" Background="{StaticResource WindowBackgroundBrush}" IsExpanded="True" IsEnabled="{Binding IsBuildInProgress, Converter={StaticResource BooleanNotConverter}}">
-                    <ItemsControl ItemsSource="{Binding TargetNameList}" >
+                    <ItemsControl ItemsSource="{Binding TargetItemList}" >
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel />
@@ -72,12 +72,26 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding}"
-                                        Click="buttonTarget_Click"
+                                <Button Click="buttonTarget_Click"
                                         MinHeight="20"
                                         Margin="4"
                                         Padding="10,0,0,0"
-                                        HorizontalContentAlignment="Left" />
+                                        HorizontalContentAlignment="Left">
+                                    <TextBlock Text="{Binding Name}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="White" />
+                                                <Setter Property="FontWeight" Value="Normal" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsLastExecuted}" Value="True">
+                                                        <Setter Property="Foreground" Value="Yellow" />
+                                                        <Setter Property="FontWeight" Value="Bold" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>    
+                                    </TextBlock>
+                                </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

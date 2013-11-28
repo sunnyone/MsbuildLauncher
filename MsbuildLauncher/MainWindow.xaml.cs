@@ -245,7 +245,9 @@ namespace MsbuildLauncher
                 return;
 
             Button button = (Button)sender;
-            this.mainViewModel.StartBuild((string)button.DataContext);
+            TargetItemViewModel item = button.DataContext as TargetItemViewModel;
+            if (item != null)
+                this.mainViewModel.StartBuild(item.Name);
         }
 
         private void comboBoxFilePath_SelectionChanged(object sender, SelectionChangedEventArgs e)

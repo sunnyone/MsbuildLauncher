@@ -51,10 +51,10 @@ namespace MsbuildLauncher.ViewModel
             set { isBuildInProgress = value; OnPropertyChanged("IsBuildInProgress"); }
         }
 
-        private ObservableCollection<string> targetNameList = new ObservableCollection<string>();
-        public ObservableCollection<string> TargetNameList
+        private ObservableCollection<TargetItemViewModel> targetItemList = new ObservableCollection<TargetItemViewModel>();
+        public ObservableCollection<TargetItemViewModel> TargetItemList
         {
-            get { return targetNameList; }
+            get { return targetItemList; }
         }
 
         private ObservableCollection<string> historyPathList = new ObservableCollection<string>();
@@ -158,9 +158,9 @@ namespace MsbuildLauncher.ViewModel
             }
         }
 
-        private void clearTargetNameList()
+        private void clearTargetItemList()
         {
-            this.TargetNameList.Clear();
+            this.TargetItemList.Clear();
         }
 
         private void clearCommonProperties()
@@ -180,7 +180,7 @@ namespace MsbuildLauncher.ViewModel
                 SupposeLogInitialized(this, new EventArgs());
             }
 
-            clearTargetNameList();
+            clearTargetItemList();
             clearCommonProperties();
             clearFileProperties();
 
@@ -194,7 +194,11 @@ namespace MsbuildLauncher.ViewModel
 
                     foreach (var targetName in driver.GetTargetNames())
                     {
-                        this.TargetNameList.Add(targetName);
+                        this.TargetItemList.Add(new TargetItemViewModel()
+                            {
+                                Name = targetName,
+                                IsLastExecuted = false
+                            });
                     }
 
                     PropertyItem[] commonProperties, fileProperties;
@@ -222,6 +226,8 @@ namespace MsbuildLauncher.ViewModel
         
         public void StartBuild(string targetName)
         {
+            this.MarkTargetLastExecuted(targetName);
+
             this.IsBuildInProgress = true;
 
             if (this.SupposeLogInitialized != null)
@@ -277,6 +283,14 @@ namespace MsbuildLauncher.ViewModel
             if (SupposeLogOutput != null)
             {
                 SupposeLogOutput(this, new LogOutputEventArgs() {Color = color, Text = text});
+            }
+        }
+
+        public void MarkTargetLastExecuted(string targetName)
+        {
+            foreach (var item in TargetItemList)
+            {
+                item.IsLastExecuted = (item.Name == targetName);
             }
         }
     }
