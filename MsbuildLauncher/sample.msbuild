@@ -2,9 +2,11 @@
  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
     <PropertyGroup>
+        <!-- TODO: define your properties -->
         <ProjectName>MsBuildSample</ProjectName>
 		<MyProperty1>This is default value</MyProperty1>
-		<MyProperty3>Banana</MyProperty3>
+        
+        <PSCmd>powershell -ExecutionPolicy RemoteSigned -Command </PSCmd>
     </PropertyGroup>
 	
     <ItemGroup>
@@ -14,21 +16,20 @@
       <Message Text="BUILD!!!" />
     </Target>
 
-    <Target Name="Install" >
-      <Message Text="INSTALL!" />
-    </Target>
-
     <Target Name="Clean" >
       <Message Text="CLEAN!" />
     </Target>
 
 	<Target Name="ShowProperties">
 	  <Message Text="$(MyProperty1)" />
-	  <Message Text="$(MyProperty3)" />
 	</Target>
 
     <Target Name="Notepad">
       <Exec Command="notepad.exe" />
     </Target>
-	
-	</Project>
+    
+	<Target Name="PSTest">
+      <Exec Command='$(PSCmd) Write-Warning "foobar"' />
+    </Target>
+    
+</Project>
