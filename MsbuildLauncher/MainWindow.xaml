@@ -81,11 +81,9 @@
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Foreground" Value="White" />
-                                                <Setter Property="FontWeight" Value="Normal" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsLastExecuted}" Value="True">
                                                         <Setter Property="Foreground" Value="Yellow" />
-                                                        <Setter Property="FontWeight" Value="Bold" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
