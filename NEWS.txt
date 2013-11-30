@@ -1,6 +1,11 @@
 NEWS
 =====
 
+2013-11-30  Version 0.2.2
+---------------------------
+* Highlight a target that built at last.
+* Fixed crashing on WindowsXP.
+
 2013-06-15  Version 0.2.1
 ---------------------------
 * The font name/size configuration.
