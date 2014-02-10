@@ -22,7 +22,9 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Windows;
 
@@ -56,8 +58,33 @@ namespace MsbuildLauncher
         {
             if (agentProcess != null)
             {
-                agentProcess.Kill();
+                killProcessRecursive(agentProcess);
             }
+        }
+
+        private void killProcessRecursive(Process process)
+        {
+            var childProcesses = getChildProcesses(process);
+            foreach (var proc in childProcesses)
+            {
+                killProcessRecursive(proc);
+            }
+            process.Kill();
+        }
+
+        private List<Process> getChildProcesses(Process process)
+        {
+            var query = string.Format("SELECT * FROM Win32_Process Where ParentProcessID = {0}", process.Id);
+            ManagementObjectSearcher mos = new ManagementObjectSearcher(query);
+
+            var children = new List<Process>();
+            foreach (ManagementObject mo in mos.Get())
+            {
+                var proc = Process.GetProcessById(Convert.ToInt32(mo["ProcessID"]));
+                children.Add(proc);
+            }
+
+            return children;
         }
     }
 }
