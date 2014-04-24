@@ -23,45 +23,42 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using System.Threading;
+using System.Threading.Tasks;
 using MsbuildLauncher.Common;
 using MsbuildLauncher.Common.Driver;
 
 namespace MsbuildLauncher.Agent {
-    class DriverFeedback : IDriverBuildFeedback
-    {
-        private IMsbuildLauncherApi launcherApi;
-        public DriverFeedback(IMsbuildLauncherApi launcherApi)
-        {
-            this.launcherApi = launcherApi;
-        }
-
-        public void WriteLog(string text, ConsoleColor color)
-        {
-            launcherApi.WriteLog(
-                new List<LogMessage>()
-                    {
-                        new LogMessage()
-                            {
-                                Text = text,
-                                Color = color.ToString()
-                            }
-                    });
-        }
-    }
-
     class Program {
         static void Build(IMsbuildLauncherApi launcherApi)
         {
-            var driverFeedback = new DriverFeedback(launcherApi);
+            var driverFeedback = new DriverBuildFeedback(launcherApi);
 
-            string filePath = launcherApi.GetXmlPath();
-            string targetName = launcherApi.GetTargetName();
-            var propertyList = launcherApi.GetProperties();
+            var task = driverFeedback.StartAsync(CancellationToken.None);
 
-            using (var driver = DriverDispatcher.CreateDriverByFilename(filePath))
+            try
             {
-                driver.Open(filePath);
-                driver.Build(targetName, propertyList.ToArray(), driverFeedback);
+                string filePath = launcherApi.GetXmlPath();
+                string targetName = launcherApi.GetTargetName();
+                var propertyList = launcherApi.GetProperties();
+
+                using (var driver = DriverDispatcher.CreateDriverByFilename(filePath))
+                {
+                    driver.Open(filePath);
+                    driver.Build(targetName, propertyList.ToArray(), driverFeedback);
+                }
+            }
+            catch (Exception ex)
+            {
+                driverFeedback.WriteLog(string.Format("Build throws an exception: {0}", ex), ConsoleColor.Red);
+            }
+            finally
+            {
+                driverFeedback.Complete();
+
+                // Exception => abort the process
+                // TODO: proper handling
+                task.Wait();
             }
         }
 
