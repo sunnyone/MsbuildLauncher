@@ -134,7 +134,7 @@ namespace MsbuildLauncher.ViewModel
         public event EventHandler<LogOutputEventArgs> SupposeLogOutput;
         public event EventHandler<LogOutputEventArgs> SupposeNotifyError;
 
-        private void supposeNotifyError(string text)
+        public void NotifyError(string text)
         {
             if (SupposeNotifyError != null)
             {
@@ -215,7 +215,7 @@ namespace MsbuildLauncher.ViewModel
             }
             catch (Exception ex)
             {
-                supposeNotifyError("Failed to load msbuild file: \n" + ex.Message);
+                NotifyError("Failed to load msbuild file: \n" + ex.Message);
                 return;
             }
 
@@ -257,7 +257,7 @@ namespace MsbuildLauncher.ViewModel
             {
                 Application.Current.Dispatcher.Invoke(new Action<Exception>((ex1) =>
                 {
-                    supposeNotifyError("Failed to build: \n" + ex1.Message);
+                    NotifyError("Failed to build: \n" + ex1.Message);
                 }), t.Exception.InnerException);
             }, TaskContinuationOptions.OnlyOnFaulted);
             
