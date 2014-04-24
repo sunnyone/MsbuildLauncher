@@ -122,27 +122,27 @@ namespace MsbuildLauncher.Common.Driver
 
         public override void Write(ConsoleColor foregroundColor, ConsoleColor backgroundColor, string value)
         {
-            throw new NotImplementedException();
+            driverBuildFeedback.WriteLog(value, foregroundColor);
         }
 
         public override void Write(string value)
         {
-            throw new NotImplementedException();
+            driverBuildFeedback.WriteLog(value, ConsoleColor.White);
         }
 
         public override void WriteDebugLine(string message)
         {
-            throw new NotImplementedException();
+            driverBuildFeedback.WriteLog(message, ConsoleColor.Gray);
         }
 
         public override void WriteErrorLine(string value)
         {
-            throw new NotImplementedException();
+            driverBuildFeedback.WriteLog(value, ConsoleColor.Red);
         }
 
         public override void WriteLine(string value)
         {
-            throw new NotImplementedException();
+            driverBuildFeedback.WriteLog(value, ConsoleColor.White);
         }
 
         public override void WriteProgress(long sourceId, System.Management.Automation.ProgressRecord record)
@@ -152,12 +152,12 @@ namespace MsbuildLauncher.Common.Driver
 
         public override void WriteVerboseLine(string message)
         {
-            throw new NotImplementedException();
+            driverBuildFeedback.WriteLog("VERBOSE: " + message, ConsoleColor.Gray);
         }
 
         public override void WriteWarningLine(string message)
         {
-            throw new NotImplementedException();
+            driverBuildFeedback.WriteLog("WARNING: " + message, ConsoleColor.Yellow);
         }
     }
 
@@ -167,7 +167,7 @@ namespace MsbuildLauncher.Common.Driver
         {
             get
             {
-                throw new NotImplementedException();
+                return ConsoleColor.Black;
             }
             set
             {
@@ -217,7 +217,7 @@ namespace MsbuildLauncher.Common.Driver
         {
             get
             {
-                throw new NotImplementedException();
+                return ConsoleColor.White;
             }
             set
             {
