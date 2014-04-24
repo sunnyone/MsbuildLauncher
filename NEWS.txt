@@ -1,6 +1,11 @@
 NEWS
 =====
 
+2014-04-24  Version 0.2.3
+---------------------------
+* Kill child processes recursively when canceling a build.
+* Performance improvement of writing log messages.
+
 2013-11-30  Version 0.2.2
 ---------------------------
 * Highlight a target that built at last.
