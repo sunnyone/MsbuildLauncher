@@ -38,6 +38,7 @@ using System.Windows.Shapes;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Threading;
+using MsbuildLauncher.Common;
 using MsbuildLauncher.ViewModel;
 
 namespace MsbuildLauncher
@@ -54,7 +55,7 @@ namespace MsbuildLauncher
 
             mainViewModel.SupposeLogInitialized += new EventHandler(mainViewModel_SupposeLogInitialized);
             mainViewModel.SupposeLogOutput += new EventHandler<LogOutputEventArgs>(mainViewModel_SupposeLogOutput);
-            mainViewModel.SupposeNotifyError += new EventHandler<LogOutputEventArgs>(mainViewModel_SupposeNotifyError);
+            mainViewModel.SupposeNotifyError += new EventHandler<NotifyErrorEventArgs>(mainViewModel_SupposeNotifyError);
         }
 
 
@@ -124,21 +125,28 @@ namespace MsbuildLauncher
             this.comboBoxFilePath.SelectionChanged += comboBoxFilePath_SelectionChanged;
         }
 
-        private void outputLog(string text, string color)
+        private void outputLog(IEnumerable<LogMessage> logs)
         {
-            Span span = new Span();
-            span.Foreground = convertColor(color);
-            span.Inlines.Add(text);
+            Paragraph p = (Paragraph)this.richTextBoxLog.Document.Blocks.LastBlock;
 
-            Paragraph p = (Paragraph)this.richTextBoxLog.Document.Blocks.Last();
-            p.Inlines.Add(span);
+            foreach (var logMessage in logs)
+            {
+                Span span = new Span();
+                span.Foreground = convertColor(logMessage.Color);
+                span.Inlines.Add(logMessage.Text);
+                p.Inlines.Add(span);
+            }
 
             this.richTextBoxLog.ScrollToEnd();
         }
 
         private void notifyErrorMessage(string text)
         {
-            outputLog(text, "Red");
+            outputLog(new [] { new LogMessage()
+                {
+                    Text = text,
+                    Color = "Red"
+                }});
         }
 
         void mainViewModel_SupposeLogInitialized(object sender, EventArgs e)
@@ -149,10 +157,10 @@ namespace MsbuildLauncher
 
         void mainViewModel_SupposeLogOutput(object sender, LogOutputEventArgs e)
         {
-            outputLog(e.Text, e.Color);
+            outputLog(e.Logs);
         }
 
-        void mainViewModel_SupposeNotifyError(object sender, LogOutputEventArgs e)
+        void mainViewModel_SupposeNotifyError(object sender, NotifyErrorEventArgs e)
         {
             notifyErrorMessage(e.Text); // e.Color is not set
         }

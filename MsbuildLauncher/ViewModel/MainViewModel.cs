@@ -38,7 +38,11 @@ namespace MsbuildLauncher.ViewModel
 {
     public class LogOutputEventArgs : EventArgs
     {
-        public string Color { get; set; }
+        public IEnumerable<LogMessage> Logs { get; set; }
+    }
+
+    public class NotifyErrorEventArgs : EventArgs
+    {
         public string Text { get; set; }
     }
 
@@ -132,13 +136,13 @@ namespace MsbuildLauncher.ViewModel
         // TODO: use action
         public event EventHandler SupposeLogInitialized;
         public event EventHandler<LogOutputEventArgs> SupposeLogOutput;
-        public event EventHandler<LogOutputEventArgs> SupposeNotifyError;
+        public event EventHandler<NotifyErrorEventArgs> SupposeNotifyError;
 
         public void NotifyError(string text)
         {
             if (SupposeNotifyError != null)
             {
-                SupposeNotifyError(this, new LogOutputEventArgs() { Text = text });
+                SupposeNotifyError(this, new NotifyErrorEventArgs() { Text = text });
             }
         }
 
@@ -278,11 +282,11 @@ namespace MsbuildLauncher.ViewModel
             }
         }
 
-        public void OutputLog(string text, string color)
+        public void OutputLog(IEnumerable<LogMessage> logs)
         {
             if (SupposeLogOutput != null)
             {
-                SupposeLogOutput(this, new LogOutputEventArgs() {Color = color, Text = text});
+                SupposeLogOutput(this, new LogOutputEventArgs() { Logs = logs });
             }
         }
 

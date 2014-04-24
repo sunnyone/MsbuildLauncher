@@ -31,9 +31,10 @@ using MsbuildLauncher.Common;
 namespace MsbuildLauncher {
     public class MsbuildLauncherApi : IMsbuildLauncherApi
     {
-        public void WriteLog(string text, string color) {
+        public void WriteLog(List<LogMessage> logs) {
             var mainViewModel = ((App)App.Current).MainViewModel;
-            mainViewModel.OutputLog(text, color);
+
+            mainViewModel.OutputLog(logs);
         }
 
         public string GetXmlPath()

@@ -21,6 +21,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using MsbuildLauncher.Common;
 using MsbuildLauncher.Common.Driver;
@@ -36,7 +37,15 @@ namespace MsbuildLauncher.Agent {
 
         public void WriteLog(string text, ConsoleColor color)
         {
-            launcherApi.WriteLog(text, color.ToString());
+            launcherApi.WriteLog(
+                new List<LogMessage>()
+                    {
+                        new LogMessage()
+                            {
+                                Text = text,
+                                Color = color.ToString()
+                            }
+                    });
         }
     }
 
