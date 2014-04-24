@@ -58,7 +58,15 @@ namespace MsbuildLauncher
         {
             if (agentProcess != null)
             {
-                killProcessRecursive(agentProcess);
+                try
+                {
+                    killProcessRecursive(agentProcess);
+                }
+                catch (Exception ex)
+                {
+                    var mainViewModel = ((App)App.Current).MainViewModel;
+                    mainViewModel.NotifyError("Failed to kill a agent process: " + ex.ToString());
+                }
             }
         }
 
@@ -80,8 +88,17 @@ namespace MsbuildLauncher
             var children = new List<Process>();
             foreach (ManagementObject mo in mos.Get())
             {
-                var proc = Process.GetProcessById(Convert.ToInt32(mo["ProcessID"]));
-                children.Add(proc);
+                var pid = Convert.ToInt32(mo["ProcessID"]);
+
+                try
+                {
+                    var proc = Process.GetProcessById(pid);
+                    children.Add(proc);
+                }
+                catch (ArgumentException)
+                {
+                    // Specified process may have already exited.
+                }
             }
 
             return children;
