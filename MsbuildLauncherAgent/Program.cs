@@ -58,36 +58,81 @@ namespace MsbuildLauncher.Agent {
             }
         }
 
-        static void Build(IMsbuildLauncherApi launcherApi)
+        static void buildWithDriver(IMsbuildLauncherApi launcherApi, IDriverBuildFeedback driverFeedback)
         {
-            var driverFeedback = new DriverBuildFeedback(launcherApi);
+            string filePath = launcherApi.GetXmlPath();
+            string targetName = launcherApi.GetTargetName();
+            var propertyList = launcherApi.GetProperties();
 
-            var task = driverFeedback.StartAsync(CancellationToken.None);
-
-            try
+            using (var driver = DriverDispatcher.CreateDriverByFilename(filePath))
             {
-                string filePath = launcherApi.GetXmlPath();
-                string targetName = launcherApi.GetTargetName();
-                var propertyList = launcherApi.GetProperties();
+                driver.Open(filePath);
+                driver.Build(targetName, propertyList.ToArray(), driverFeedback);
+            }
+        }
 
-                using (var driver = DriverDispatcher.CreateDriverByFilename(filePath))
+        static void writeLogError(string pipeName, string message) {
+            // For DriverFeedback is not available
+            withChannel(pipeName, api =>
+            {
+                api.WriteLog(new List<LogMessage> { new LogMessage() 
+                    { Text = message, Color = "Red" }
+                });
+            });
+        }
+
+        static void Build(string pipeName)
+        {
+            Task driverTask = null, buildTask = null;
+            DriverBuildFeedback driverFeedback = null;
+            string errorMessage = null;
+            withChannel(pipeName, launcherApi =>
+            {
+                driverFeedback = new DriverBuildFeedback(launcherApi);
+
+                driverTask = driverFeedback.StartAsync(CancellationToken.None);
+                buildTask = Task.Factory.StartNew(() => buildWithDriver(launcherApi, driverFeedback));
+
+                Task.WaitAny(driverTask, buildTask);
+
+                if (driverTask.IsCompleted)
                 {
-                    driver.Open(filePath);
-                    driver.Build(targetName, propertyList.ToArray(), driverFeedback);
+                    if (driverTask.IsFaulted)
+                    {
+                        errorMessage = string.Format("Communication failed with the agent: {0}", driverTask.Exception);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                driverFeedback.WriteLog(string.Format("Build throws an exception: {0}", ex), ConsoleColor.Red);
-            }
-            finally
-            {
-                driverFeedback.Complete();
 
-                // Exception => abort the process
-                // TODO: proper handling
-                task.Wait();
+                if (buildTask.IsCompleted)
+                {
+                    if (driverFeedback != null)
+                    {
+                        driverFeedback.Complete();
+                        try
+                        {
+                            driverTask.Wait();
+                        }
+                        catch
+                        {
+                            // observe an exception with last Task.WaitAll if nessessary.
+                        }
+                    }
+
+                    if (buildTask.IsFaulted)
+                    {
+                        errorMessage = string.Format("Build throws an exception: {0}", buildTask.Exception);
+                    }
+                }
+            });
+
+            // This may throw an exception, it will abort the process.
+            if (errorMessage != null)
+            {
+                writeLogError(pipeName, errorMessage);
             }
+
+            // No way exists to stop buildTask properly. Wait the user cancel the build if nessessary.
+            Task.WaitAll(buildTask, driverTask);
         }
 
         static void Main(string[] args) {
@@ -96,8 +141,7 @@ namespace MsbuildLauncher.Agent {
             }
 
             string pipeName = args[0];
-
-            withChannel(pipeName, api => Build(api));
+            Build(pipeName);
         }
     }
 }
