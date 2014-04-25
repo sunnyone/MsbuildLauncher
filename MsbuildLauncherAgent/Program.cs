@@ -30,6 +30,34 @@ using MsbuildLauncher.Common.Driver;
 
 namespace MsbuildLauncher.Agent {
     class Program {
+        private static void withChannel(string pipeName, Action<IMsbuildLauncherApi> action)
+        {
+            ChannelFactory<IMsbuildLauncherApi> channelFactory = null;
+            try
+            {
+                channelFactory = new ChannelFactory<IMsbuildLauncherApi>(
+                                                        new NetNamedPipeBinding(),
+                                                        new EndpointAddress("net.pipe://localhost/" + pipeName));
+                channelFactory.Open();
+                IMsbuildLauncherApi launcherApi = channelFactory.CreateChannel();
+                action(launcherApi);
+            }
+            finally
+            {
+                if (channelFactory != null)
+                {
+                    try
+                    {
+                        channelFactory.Close();
+                    }
+                    catch
+                    {
+                        channelFactory.Abort();
+                    }
+                }
+            }
+        }
+
         static void Build(IMsbuildLauncherApi launcherApi)
         {
             var driverFeedback = new DriverBuildFeedback(launcherApi);
@@ -69,19 +97,7 @@ namespace MsbuildLauncher.Agent {
 
             string pipeName = args[0];
 
-            ChannelFactory<IMsbuildLauncherApi> channelFactory = null;
-            try {
-                channelFactory = new ChannelFactory<IMsbuildLauncherApi>(
-                                                        new NetNamedPipeBinding(),
-                                                        new EndpointAddress("net.pipe://localhost/" + pipeName));
-                channelFactory.Open();
-                IMsbuildLauncherApi launcherApi = channelFactory.CreateChannel();
-                Build(launcherApi);
-            } finally {
-                if (channelFactory != null) {
-                    channelFactory.Close();
-                }
-            }
+            withChannel(pipeName, api => Build(api));
         }
     }
 }
