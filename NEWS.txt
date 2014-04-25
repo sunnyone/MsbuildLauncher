@@ -1,6 +1,10 @@
 NEWS
 =====
 
+2014-04-25  Version 0.2.4
+---------------------------
+* Extend net.pipe quotas for large logs.
+
 2014-04-24  Version 0.2.3
 ---------------------------
 * Kill child processes recursively when canceling a build.
