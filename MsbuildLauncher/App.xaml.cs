@@ -26,8 +26,8 @@ namespace MsbuildLauncher {
             serviceHost = new System.ServiceModel.ServiceHost(typeof(MsbuildLauncherApi));
 
             string pipeName = "MsBuildLauncher-" + Guid.NewGuid().ToString();
-            serviceHost.AddServiceEndpoint(typeof(IMsbuildLauncherApi), new System.ServiceModel.NetNamedPipeBinding(),
-                                           "net.pipe://localhost/" + pipeName);
+            serviceHost.AddServiceEndpoint(typeof(IMsbuildLauncherApi),
+                AgentCommunicationUtil.CreateBinding(), AgentCommunicationUtil.CreateEndpointUri(pipeName));
             PipeName = pipeName;
             serviceHost.Open();
 

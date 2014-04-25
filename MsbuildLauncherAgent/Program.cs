@@ -36,8 +36,8 @@ namespace MsbuildLauncher.Agent {
             try
             {
                 channelFactory = new ChannelFactory<IMsbuildLauncherApi>(
-                                                        new NetNamedPipeBinding(),
-                                                        new EndpointAddress("net.pipe://localhost/" + pipeName));
+                    AgentCommunicationUtil.CreateBinding(),
+                    new EndpointAddress(AgentCommunicationUtil.CreateEndpointUri(pipeName)));
                 channelFactory.Open();
                 IMsbuildLauncherApi launcherApi = channelFactory.CreateChannel();
                 action(launcherApi);
