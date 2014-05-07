@@ -6,12 +6,14 @@ using System.Windows.Data;
 
 namespace MsbuildLauncher
 {
-    class MultiplyConverter : IValueConverter
+  using System.Globalization;
+
+  class MultiplyConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             double d1 = (double)value;
-            double d2 = Double.Parse((string) parameter);
+            double d2 = Double.Parse((string) parameter, NumberFormatInfo.InvariantInfo);
 
             return d1 * d2;
         }
