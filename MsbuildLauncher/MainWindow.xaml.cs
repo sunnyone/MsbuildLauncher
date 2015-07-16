@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -85,7 +86,7 @@ namespace MsbuildLauncher
 
             double d;
             string fontSize = Properties.Settings.Default.FontSize ?? "";
-            this.mainViewModel.FontSize = Double.TryParse(fontSize, out d)
+            this.mainViewModel.FontSize = Double.TryParse(fontSize, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out d)
                                               ? (new FontSizeConverter().ConvertFrom(fontSize + "pt")).ToString()
                                               : null;
         }
