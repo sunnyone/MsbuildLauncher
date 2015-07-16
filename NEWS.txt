@@ -1,6 +1,10 @@
 NEWS
 =====
 
+2015-07-16  Version 0.2.5
+---------------------------
+* Fixed the issue to display properties on a German environment (Thanks fischero19).
+
 2014-04-25  Version 0.2.4
 ---------------------------
 * Extend net.pipe quotas for large logs.
